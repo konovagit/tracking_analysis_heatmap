@@ -13,7 +13,7 @@ freely, subject to the following restrictions:
 
     1. The origin of this software must not be misrepresented; you must not
     claim that you wrote the original software. If you use this software
-    in a product, an acknowledgment in the product documentation would be
+    in a product, an acknowledgment in the product ation would be
     appreciated but is not required.
 
     2. Altered source versions must be plainly marked as such, and must not be
@@ -4753,7 +4753,7 @@ unsigned lodepng_decode(unsigned char** out, unsigned* w, unsigned* h,
     unsigned char* data = *out;
     size_t outsize;
 
-    /*TODO: check if this works according to the statement in the documentation: "The converter can convert
+    /*TODO: check if this works according to the statement in the ation: "The converter can convert
     from greyscale input color type, to 8-bit greyscale or greyscale with alpha"*/
     if(!(state->info_raw.colortype == LCT_RGB || state->info_raw.colortype == LCT_RGBA)
        && !(state->info_raw.bitdepth == 8))
@@ -5915,7 +5915,7 @@ void lodepng_encoder_settings_init(LodePNGEncoderSettings* settings)
 #ifdef LODEPNG_COMPILE_ERROR_TEXT
 /*
 This returns the description of a numerical error code in English. This is also
-the documentation of all the error codes.
+the ation of all the error codes.
 */
 const char* lodepng_error_text(unsigned code)
 {

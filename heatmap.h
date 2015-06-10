@@ -5,7 +5,7 @@
  * Copyright (c) 2013 Lucas Beyer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
+ * this software and associated ation files (the "Software"), to deal in
  * the Software without restriction, including without limitation the rights to
  * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
  * the Software, and to permit persons to whom the Software is furnished to do so,
@@ -94,7 +94,7 @@ unsigned char* heatmap_render_default_to(const heatmap_t* h, unsigned char* colo
  *
  * colorscheme: See the description of heatmap_colorscheme_t for more details.
  *
- * For details on the colorbuf and the return value, refer to the documentation
+ * For details on the colorbuf and the return value, refer to the ation
  * of `heatmap_render_default_to`.
  */
 unsigned char* heatmap_render_to(const heatmap_t* h, const heatmap_colorscheme_t* colorscheme, unsigned char* colorbuf);
@@ -108,7 +108,7 @@ unsigned char* heatmap_render_to(const heatmap_t* h, const heatmap_colorscheme_t
  *             all spots hotter than `saturation` will be assigned the same
  *             color as the hottest color on the scale.
  *
- * For details on the colorbuf and the return value, refer to the documentation
+ * For details on the colorbuf and the return value, refer to the ation
  * of `heatmap_render_default_to`.
  */
 unsigned char* heatmap_render_saturated_to(const heatmap_t* h, const heatmap_colorscheme_t* colorscheme, float saturation, unsigned char* colorbuf);
@@ -119,7 +119,7 @@ unsigned char* heatmap_render_saturated_to(const heatmap_t* h, const heatmap_col
  * data: exactly w*h float values which will be added to the heatmap centered
  *       around every datapoint drawn onto the heatmap.
  *
- * For more information about stamps, read `heatmap_stamp_t`'s documentation.
+ * For more information about stamps, read `heatmap_stamp_t`'s ation.
  */
 heatmap_stamp_t* heatmap_stamp_load(unsigned w, unsigned h, float* data);
 
@@ -127,7 +127,7 @@ heatmap_stamp_t* heatmap_stamp_load(unsigned w, unsigned h, float* data);
  * have a size of 2*radius+1 square. The default stamp is just a spherical
  * gradient around the center.
  *
- * For more information about stamps, read `heatmap_stamp_t`'s documentation.
+ * For more information about stamps, read `heatmap_stamp_t`'s ation.
  */
 heatmap_stamp_t* heatmap_stamp_gen(unsigned radius);
 
@@ -140,7 +140,7 @@ heatmap_stamp_t* heatmap_stamp_gen(unsigned radius);
  *            One minus the returned value, clamped to [0,1] will be the
  *            pixel's value.
  *
- * For more information about stamps, read `heatmap_stamp_t`'s documentation.
+ * For more information about stamps, read `heatmap_stamp_t`'s ation.
  */
 heatmap_stamp_t* heatmap_stamp_gen_nonlinear(unsigned radius, float (*distshape)(float));
 
@@ -152,7 +152,7 @@ void heatmap_stamp_free(heatmap_stamp_t* s);
  * colors: a buffer containing RGBA colors to use when rendering the heatmap.
  *
  * For more information about colorschemes, read `heatmap_colorscheme_t`'s
- * documentation.
+ * ation.
  */
 heatmap_colorscheme_t* heatmap_colorscheme_load(const unsigned char* colors, size_t ncolors);
 

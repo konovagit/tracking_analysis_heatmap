@@ -13,7 +13,7 @@ freely, subject to the following restrictions:
 
     1. The origin of this software must not be misrepresented; you must not
     claim that you wrote the original software. If you use this software
-    in a product, an acknowledgment in the product documentation would be
+    in a product, an acknowledgment in the product ation would be
     appreciated but is not required.
 
     2. Altered source versions must be plainly marked as such, and must not be
@@ -312,8 +312,8 @@ format, and is used both for PNG and raw image data in LodePNG.
 typedef struct LodePNGColorMode
 {
   /*header (IHDR)*/
-  LodePNGColorType colortype; /*color type, see PNG standard or documentation further in this header file*/
-  unsigned bitdepth;  /*bits per sample, see PNG standard or documentation further in this header file*/
+  LodePNGColorType colortype; /*color type, see PNG standard or ation further in this header file*/
+  unsigned bitdepth;  /*bits per sample, see PNG standard or ation further in this header file*/
 
   /*
   palette (PLTE and tRNS)
@@ -889,7 +889,7 @@ TODO:
 #endif /*LODEPNG_H inclusion guard*/
 
 /*
-LodePNG Documentation
+LodePNG ation
 ---------------------
 
 0. table of contents
@@ -1046,7 +1046,7 @@ for all C-style structs:
 
 Decoding converts a PNG compressed image to a raw pixel buffer.
 
-Most documentation on using the decoder is at its declarations in the header
+Most ation on using the decoder is at its declarations in the header
 above. For C, simple decoding can be done with functions such as
 lodepng_decode32, and more advanced decoding can be done with the struct
 LodePNGState and lodepng_decode. For C++, all decoding can be done with the
@@ -1067,7 +1067,7 @@ functions.
 
 It contains for example the original color type of the PNG image, text comments,
 suggested background color, etc... More details about the LodePNGInfo struct are
-at its declaration documentation.
+at its declaration ation.
 
 LodePNGColorMode info_raw
 -------------------------
@@ -1097,7 +1097,7 @@ color type information in the LodePNGInfo.
 
 Encoding converts a raw pixel buffer to a PNG compressed image.
 
-Most documentation on using the encoder is at its declarations in the header
+Most ation on using the encoder is at its declarations in the header
 above. For C, simple encoding can be done with functions such as
 lodepng_encode32, and more advanced decoding can be done with the struct
 LodePNGState and lodepng_encode. For C++, all encoding can be done with the
@@ -1595,7 +1595,7 @@ symbol.
 *) 7 nov 2010: added LodePNG_error_text function to get error code description.
 *) 30 okt 2010: made decoding slightly faster
 *) 26 okt 2010: (!) changed some C function and struct names (more consistent).
-     Reorganized the documentation and the declaration order in the header.
+     Reorganized the ation and the declaration order in the header.
 *) 08 aug 2010: only changed some comments and external samples.
 *) 05 jul 2010: fixed bug thanks to warnings in the new gcc version.
 *) 14 mar 2010: fixed bug where too much memory was allocated for char buffers.
@@ -1653,7 +1653,7 @@ symbol.
     Removed some code duplication in the decoder. Fixed little bug in an example.
 *) 09 dec 2006: (!) Placed output parameters of public functions as first parameter.
     Fixed a bug of the decoder with 16-bit per color.
-*) 15 okt 2006: Changed documentation structure
+*) 15 okt 2006: Changed ation structure
 *) 09 okt 2006: Encoder class added. It encodes a valid PNG image from the
     given image buffer, however for now it's not compressed.
 *) 08 sep 2006: (!) Changed to interface with a Decoder class
@@ -1663,7 +1663,7 @@ symbol.
     struct of type LodePNG::LodePNG_Info, instead of a vector, which was a bit clumsy.
 *) 28 jul 2006: Cleaned the code and added new error checks.
     Corrected terminology "deflate" into "inflate".
-*) 23 jun 2006: Added SDL example in the documentation in the header, this
+*) 23 jun 2006: Added SDL example in the ation in the header, this
     example allows easy debugging by displaying the PNG and its transparency.
 *) 22 jun 2006: (!) Changed way to obtain error value. Added
     loadFile function for convenience. Made decodePNG32 faster.
@@ -1674,7 +1674,7 @@ symbol.
     needed, and performed some optimizations.
 *) 07 jun 2006: (!) Renamed functions to decodePNG and placed them
     in LodePNG namespace. Changed the order of the parameters. Rewrote the
-    documentation in the header. Renamed files to lodepng.cpp and lodepng.h
+    ation in the header. Renamed files to lodepng.cpp and lodepng.h
 *) 22 apr 2006: Optimized and improved some code
 *) 07 sep 2005: (!) Changed to std::vector interface
 *) 12 aug 2005: Initial release (C++, decoder only)
