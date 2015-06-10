@@ -1,11 +1,12 @@
 dependencies: \
   /Users/konova/tracking_analysis_heatmap/tracking_analysis_heatmap/main.cpp \
-  /usr/local/include/opencv/highgui.h \
-  /usr/local/include/opencv2/core/core_c.h \
-  /usr/local/include/opencv2/core/types_c.h \
+  /Users/konova/tracking_analysis_heatmap/lodepng.h \
+  /Users/konova/tracking_analysis_heatmap/heatmap.h \
+  /Users/konova/tracking_analysis_heatmap/gray.h \
+  /usr/local/include/opencv2/imgcodecs.hpp \
+  /usr/local/include/opencv2/core.hpp \
   /usr/local/include/opencv2/core/cvdef.h \
   /usr/local/include/opencv2/hal/defs.h \
-  /usr/local/include/opencv2/core.hpp \
   /usr/local/include/opencv2/core/version.hpp \
   /usr/local/include/opencv2/core/base.hpp \
   /usr/local/include/opencv2/core/cvstd.hpp \
@@ -22,13 +23,23 @@ dependencies: \
   /usr/local/include/opencv2/core/operations.hpp \
   /usr/local/include/opencv2/core/cvstd.inl.hpp \
   /usr/local/include/opencv2/core/utility.hpp \
+  /usr/local/include/opencv2/core/core_c.h \
+  /usr/local/include/opencv2/core/types_c.h \
   /usr/local/include/opencv2/core/optim.hpp \
+  /usr/local/include/opencv2/videoio/videoio.hpp \
+  /usr/local/include/opencv2/videoio.hpp \
+  /usr/local/include/opencv2/highgui/highgui.hpp \
+  /usr/local/include/opencv2/highgui.hpp \
   /usr/local/include/opencv2/highgui/highgui_c.h \
   /usr/local/include/opencv2/imgproc/imgproc_c.h \
   /usr/local/include/opencv2/imgproc/types_c.h \
   /usr/local/include/opencv2/imgcodecs/imgcodecs_c.h \
   /usr/local/include/opencv2/videoio/videoio_c.h \
+  /usr/local/include/opencv2/imgproc/imgproc.hpp \
+  /usr/local/include/opencv2/imgproc.hpp \
+  /usr/local/include/opencv2/core/core.hpp \
   /usr/local/include/opencv/cv.h \
   /usr/local/include/opencv2/photo/photo_c.h \
   /usr/local/include/opencv2/video/tracking_c.h \
-  /usr/local/include/opencv2/objdetect/objdetect_c.h
+  /usr/local/include/opencv2/objdetect/objdetect_c.h \
+  /usr/local/include/opencv/cvaux.h /usr/local/include/opencv/highgui.h

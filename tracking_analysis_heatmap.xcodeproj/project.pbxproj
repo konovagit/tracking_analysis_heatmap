@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		A9CFA3F31B2789C8005A254F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9CFA3F21B2789C8005A254F /* main.cpp */; };
+		A9CFA3FF1B283161005A254F /* lodepng.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9CFA3FA1B283161005A254F /* lodepng.cpp */; };
+		A9CFA4001B283161005A254F /* heatmap.c in Sources */ = {isa = PBXBuildFile; fileRef = A9CFA3FC1B283161005A254F /* heatmap.c */; };
+		A9CFA4011B283161005A254F /* gray.c in Sources */ = {isa = PBXBuildFile; fileRef = A9CFA3FE1B283161005A254F /* gray.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +28,12 @@
 /* Begin PBXFileReference section */
 		A9CFA3EF1B2789C8005A254F /* tracking_analysis_heatmap */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tracking_analysis_heatmap; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9CFA3F21B2789C8005A254F /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		A9CFA3F91B283161005A254F /* heatmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = heatmap.h; sourceTree = "<group>"; };
+		A9CFA3FA1B283161005A254F /* lodepng.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lodepng.cpp; sourceTree = "<group>"; };
+		A9CFA3FB1B283161005A254F /* lodepng.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lodepng.h; sourceTree = "<group>"; };
+		A9CFA3FC1B283161005A254F /* heatmap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = heatmap.c; sourceTree = "<group>"; };
+		A9CFA3FD1B283161005A254F /* gray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gray.h; sourceTree = "<group>"; };
+		A9CFA3FE1B283161005A254F /* gray.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gray.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +50,12 @@
 		A9CFA3E61B2789C8005A254F = {
 			isa = PBXGroup;
 			children = (
+				A9CFA3F91B283161005A254F /* heatmap.h */,
+				A9CFA3FA1B283161005A254F /* lodepng.cpp */,
+				A9CFA3FB1B283161005A254F /* lodepng.h */,
+				A9CFA3FC1B283161005A254F /* heatmap.c */,
+				A9CFA3FD1B283161005A254F /* gray.h */,
+				A9CFA3FE1B283161005A254F /* gray.c */,
 				A9CFA3F11B2789C8005A254F /* tracking_analysis_heatmap */,
 				A9CFA3F01B2789C8005A254F /* Products */,
 			);
@@ -119,6 +134,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9CFA3F31B2789C8005A254F /* main.cpp in Sources */,
+				A9CFA4001B283161005A254F /* heatmap.c in Sources */,
+				A9CFA4011B283161005A254F /* gray.c in Sources */,
+				A9CFA3FF1B283161005A254F /* lodepng.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,6 +303,7 @@
 				A9CFA3F81B2789C8005A254F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
