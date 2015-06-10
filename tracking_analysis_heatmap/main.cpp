@@ -25,7 +25,7 @@ void conversion_grayscale(string png_name);
 
 IplImage* histogram(IplImage *image);
 
-double getPSNR(const Mat& I1, const Mat& I2); //for the comparison
+
 
 
 int main()
@@ -43,17 +43,6 @@ int main()
     
     conversion_grayscale(imageName2);
     
-    ////Comparison///
-    double psnrV;
-    Scalar mssimV;
-    string reference="/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap1.png";
-    string compar="/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap2.png";
-    
-    Mat Reference= imread(reference, CV_LOAD_IMAGE_GRAYSCALE);
-    Mat Compar= imread(compar, CV_LOAD_IMAGE_GRAYSCALE);
-    
-    psnrV = getPSNR(Reference,Compar);
-    cout<<"Resultat comparison:"<<psnrV<<"%"<<endl;
 
     IplImage *hist, *image;
     image = cvLoadImage("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap2.png");
@@ -253,27 +242,6 @@ IplImage* histogram(IplImage *image)
 }
 
 
-double getPSNR(const Mat& I1, const Mat& I2)
-{
-    Mat s1;
-    absdiff(I1, I2, s1);       // |I1 - I2|
-    s1.convertTo(s1, CV_32F);  // cannot make a square on 8 bits
-    s1 = s1.mul(s1);           // |I1 - I2|^2
-    
-    Scalar s = sum(s1);        // sum elements per channel
-    
-    double sse = s.val[0] + s.val[1] + s.val[2]; // sum channels
-    
-    if( sse <= 1e-10) // for small values return zero
-        return 0;
-    else
-    {
-        double mse  = sse / (double)(I1.channels() * I1.total());
-        double psnr = 10.0 * log10((255 * 255) / mse);
-        
-        return (psnr*100)/59.44;
-    }
-}
 
 
 
