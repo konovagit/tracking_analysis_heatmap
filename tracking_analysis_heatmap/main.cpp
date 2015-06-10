@@ -44,7 +44,7 @@ void create_histogram(string path_save, string image)
     /// Load image
     src = imread( image, 1 );
     
-    /*
+    /* /todo
     if( !src.data )
     { return -1; }
     */
