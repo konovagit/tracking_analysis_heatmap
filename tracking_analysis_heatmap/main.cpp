@@ -43,36 +43,7 @@ int main()
     
     conversion_grayscale(imageName2);
     
-    ////Comparison///
-    double psnrV;
-    Scalar mssimV;
-    string reference="/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap1.png";
-    string compar="/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap2.png";
-    
-    Mat Reference= imread(reference, CV_LOAD_IMAGE_GRAYSCALE);
-    Mat Compar= imread(compar, CV_LOAD_IMAGE_GRAYSCALE);
-    
-    psnrV = getPSNR(Reference,Compar);
-    cout<<"Resultat comparison:"<<psnrV<<"%"<<endl;
 
-    IplImage *hist, *image;
-    image = cvLoadImage("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap2.png");
-    hist=histogram(image);
-    
-    char key;
-    
-    cvShowImage("difference between Two heatmap", hist);
-    
-    // While we don't want to quit
-    while(key != 'Q' && key != 'q') {
-        
-        key = cvWaitKey(10);
-        
-    }
-    // Destroy the window we have created
-    cvDestroyWindow("difference between Two heatmap");
-    
-    
     
     return 0;
 }
@@ -200,80 +171,5 @@ void generate_heatmap(string filename, double begin, double end)
         }
     }
 }
-
-
-IplImage* histogram(IplImage *image)
-{
-    //Function which takes an image as parameter and returns the image containing the gray-scale intensity histogram
-    
-    IplImage* imgHistogram; IplImage* gray; //Variables for the histogram's image and the gray-scale intermediate
-    CvHistogram* hist; //To store the histogram variable in the proper format
-    
-    //The next few lines of declarations are all important variables for executing the OpenCV histogram functions
-    
-    int bins = 256;//Size of the histogram
-    int hsize[] = {bins}; //One-dimensional histogram, so one value in array
-    
-    float max_value = 0, min_value = 0; //Max and min value of the histogram
-    
-    int value; //Value of frequency;
-    int normalized, scale = 200; //Variables for storing the normalized value, and the scaled maximum (200)
-    
-    float xranges[] = {0,255};//Ranges of the values
-    float* ranges[] = {xranges};//One-dimensional image, so only one value in array
-    
-    gray = cvCreateImage(cvGetSize(image), 8, 1);
-    cvCvtColor(image, gray, CV_BGR2GRAY);//Grayscale equivalent created
-    
-    IplImage* planes[] = {gray};//Planes to obtain the histogram, in this case just one
-    
-    hist = cvCreateHist(1, hsize, CV_HIST_ARRAY, ranges,1);//Creates the histogram with the necessary parameters
-    cvCalcHist(planes, hist, 0, NULL); //Calculates the histogram with the parameters
-    cvGetMinMaxHistValue(hist, &min_value, &max_value); //Reports the minimal and maximal values in histogram
-    
-    imgHistogram = cvCreateImage(cvSize(bins,scale),8,3); //Creates the image of the histogram of width 'bins' (256) and height 'scale' (200)
-    CvScalar CV_BGR(255,255,255), CV_BGR1(0,0,0);
-    
-    
-    cvRectangle(imgHistogram, cvPoint(0,0), cvPoint(bins-1,scale-1), CV_BGR,-1); //Draws a white rectangle from (0,0) to (256,200)
-    
-    //Draws the vertically flipped histogram
-    
-    for(int i=0; i < bins; i++)
-   	{
-        value = cvGetReal1D(hist->bins, i); //Obtains the frequency for the intensity i
-        normalized = cvRound(value*scale/max_value); //Scales it down
-        cvLine(imgHistogram,cvPoint(i,scale), cvPoint(i,scale-normalized), CV_BGR1); //Draws a line in the vertical direction of that height from point (i,200) to (i,200-normalized)
-    }
-    
-    cvFlip(image, NULL, 1);// flips the image upside down
-    
-    cvReleaseImage(&gray);
-    return imgHistogram; //Returns the image
-}
-
-
-double getPSNR(const Mat& I1, const Mat& I2)
-{
-    Mat s1;
-    absdiff(I1, I2, s1);       // |I1 - I2|
-    s1.convertTo(s1, CV_32F);  // cannot make a square on 8 bits
-    s1 = s1.mul(s1);           // |I1 - I2|^2
-    
-    Scalar s = sum(s1);        // sum elements per channel
-    
-    double sse = s.val[0] + s.val[1] + s.val[2]; // sum channels
-    
-    if( sse <= 1e-10) // for small values return zero
-        return 0;
-    else
-    {
-        double mse  = sse / (double)(I1.channels() * I1.total());
-        double psnr = 10.0 * log10((255 * 255) / mse);
-        
-        return (psnr*100)/59.44;
-    }
-}
-
 
 
