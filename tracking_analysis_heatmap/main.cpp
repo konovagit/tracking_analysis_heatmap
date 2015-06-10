@@ -23,6 +23,7 @@ void generate_heatmap(string filename, double begin, double end);
 
 Mat diff_heatmap(const Mat& I1, const Mat& I2);
 
+double getPSNR(const Mat& I1, const Mat& I2); //for the comparison
 
 int main()
 {
@@ -37,8 +38,8 @@ int main()
     string imageName = "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap.png";
     string imageName2 = "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap9.png";
     
-    
     ////Comparison///
+    double psnrV;
     Scalar mssimV;
     string reference="/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap1.png";
     string compar="/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap2.png";
@@ -46,6 +47,9 @@ int main()
     Mat Reference= imread(reference, CV_LOAD_IMAGE_GRAYSCALE);
     Mat Compar= imread(compar, CV_LOAD_IMAGE_GRAYSCALE);
     
+    psnrV = getPSNR(Reference,Compar);
+    cout<<"Resultat comparison:"<<psnrV<<"%"<<endl;
+
     
     // DIFF
      Mat diff=diff_heatmap(Reference, Compar);
@@ -189,6 +193,30 @@ Mat diff_heatmap(const Mat& I1, const Mat& I2)
     
     return s1;
 }
+
+
+double getPSNR(const Mat& I1, const Mat& I2)
+{
+    Mat s1;
+    absdiff(I1, I2, s1);       // |I1 - I2|
+    s1.convertTo(s1, CV_32F);  // cannot make a square on 8 bits
+    s1 = s1.mul(s1);           // |I1 - I2|^2
+    
+    Scalar s = sum(s1);        // sum elements per channel
+    
+    double sse = s.val[0] + s.val[1] + s.val[2]; // sum channels
+    
+    if( sse <= 1e-10) // for small values return zero
+        return 0;
+    else
+    {
+        double mse  = sse / (double)(I1.channels() * I1.total());
+        double psnr = 10.0 * log10((255 * 255) / mse);
+        
+        return (psnr*100)/59.44;
+    }
+}
+
 
 
 
