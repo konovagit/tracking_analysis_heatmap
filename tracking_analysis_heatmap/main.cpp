@@ -23,8 +23,6 @@ void generate_heatmap(string filename, double begin, double end);
 
 void conversion_grayscale(string png_name);
 
-Mat diff_heatmap(const Mat& I1, const Mat& I2);
-
 IplImage* histogram(IplImage *image);
 
 double getPSNR(const Mat& I1, const Mat& I2); //for the comparison
@@ -38,9 +36,9 @@ int main()
     cout<<"close windows to continue" <<endl;
     
     
-    generate_heatmap("/Users/konova/Documents/code/tracking_analysis_heatmap/Res/Video_134823_Feng/134823_Feng_coordinates.txt", 5, 439);
-    string imageName = "/Users/konova/Documents/code/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap.png";
-    string imageName2 = "/Users/konova/Documents/code/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap9.png";
+    generate_heatmap("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/134823_Feng_coordinates.txt", 5, 439);
+    string imageName = "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap.png";
+    string imageName2 = "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap9.png";
     
     
     conversion_grayscale(imageName2);
@@ -48,35 +46,17 @@ int main()
     ////Comparison///
     double psnrV;
     Scalar mssimV;
-    string reference="/Users/konova/Documents/code/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap1.png";
-    string compar="/Users/konova/Documents/code/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap2.png";
+    string reference="/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap1.png";
+    string compar="/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap2.png";
     
     Mat Reference= imread(reference, CV_LOAD_IMAGE_GRAYSCALE);
     Mat Compar= imread(compar, CV_LOAD_IMAGE_GRAYSCALE);
     
     psnrV = getPSNR(Reference,Compar);
     cout<<"Resultat comparison:"<<psnrV<<"%"<<endl;
-    
-    /* DIFF
-     Mat diff=diff_heatmap(Reference, Compar);
-     IplImage *img;
-     char key;
-     cvNamedWindow("difference between Two heatmap", CV_WINDOW_AUTOSIZE);
-     img = new IplImage(diff);
-     cvShowImage("difference between Two heatmap", img);
-     
-     // While we don't want to quit
-     while(key != 'Q' && key != 'q') {
-     
-     key = cvWaitKey(10);
-     
-     }
-     // Destroy the window we have created
-     cvDestroyWindow("difference between Two heatmap");
-     */
-    
+
     IplImage *hist, *image;
-    image = cvLoadImage("/Users/konova/Documents/code/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap2.png");
+    image = cvLoadImage("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap2.png");
     hist=histogram(image);
     
     char key;
@@ -120,8 +100,8 @@ void generate_heatmap(string filename, double begin, double end)
     
     // Path of the heatmap and the video's background
     string nom_video = "134823_Feng";
-    string heatmap_img = "/Users/konova/Documents/code/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap.png"; // where the heatmap will be saved
-    string background_img = "/Users/konova/Documents/code/tracking_analysis_heatmap/Res/Video_134823_Feng/134823_Feng_background.png";
+    string heatmap_img = "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap.png"; // where the heatmap will be saved
+    string background_img = "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/134823_Feng_background.png";
     
     // Size of heat map. Must be the same that the video.
     static const size_t w = 720, h = 720;
@@ -221,17 +201,6 @@ void generate_heatmap(string filename, double begin, double end)
     }
 }
 
-Mat diff_heatmap(const Mat& I1, const Mat& I2)
-{
-    string test_test = "/Users/konova/Documents/code/tracking_analysis_heatmap/Res/Video_134823_Feng/test_test.png";
-    Mat s1;
-    absdiff(I1, I2, s1);       // |I1 - I2|
-    s1.convertTo(s1, CV_32F);  // cannot make a square on 8 bits
-    s1 = s1.mul(s1);           // |I1 - I2|^2
-    
-    
-    return s1;
-}
 
 IplImage* histogram(IplImage *image)
 {
@@ -306,17 +275,5 @@ double getPSNR(const Mat& I1, const Mat& I2)
     }
 }
 
-IplImage* createMask(IplImage* image) {
-    
-    IplImage *mask;
-    
-    mask = cvCreateImage(cvGetSize(image), 8, 1);
-    
-    cvInRangeS(image, cvScalar(125.0, 0.0, 0.0), cvScalar(255.0 + 1.0, 130.0, 130.0), mask);
-    cvNot(mask, mask);
-    
-    return mask;
-    
-}
 
 
