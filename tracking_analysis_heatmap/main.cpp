@@ -47,7 +47,7 @@ int main()
     Mat src, dst;
     
     /// Load image
-    src = imread( "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap9.png", 1 );
+    src = imread( "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap1.png", 1 );
     
     if( !src.data )
     { return -1; }
@@ -104,6 +104,9 @@ int main()
     imshow("calcHist Demo", histImage );
     
     waitKey(0);
+    
+    //save histogram
+    imwrite( "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/histogramme1.png", histImage );
     
     return 0;
 
