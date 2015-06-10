@@ -29,6 +29,9 @@ double getPSNR(const Mat& I1, const Mat& I2); //for the comparison
 
 void create_histogram(string path_save, string image);
 
+Mat compute_signatures(IplImage* hist1,IplImage* hist2, int h_bins = 30, int s_bins = 32);
+
+void equalization(string source, string destination);
 
 
 int main()
@@ -46,9 +49,9 @@ int main()
     
     conversion_grayscale(imageName2);
     
-    create_histogram("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/histogramme.png", "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap.png");
-
-    
+    create_histogram("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/Equ_histogramme.png", "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/Equ_heatmap1.png");
+   
+    equalization("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/Equ_heatmap1.png", "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/Equ_histogramme.png");
     
     return 0;
 }
@@ -247,7 +250,64 @@ void create_histogram(string path_save, string image)
     imwrite( path_save, histImage );
 }
 
+/*
+Mat compute_signatures(IplImage* hist1,IplImage* hist2, int h_bins, int s_bins)
+{
+int num_rows = h_bins * s_bins;
+    
+    //Create matrices to store the signature in
+    Mat sig1(num_rows, 3, CV_32FC1);
+    Mat sig2(num_rows, 3, CV_32FC1);
+    int h,s;
+    float bin_val, bin_val2;
+    
+    //Fill signatures for the two histograms
+for (h=0; h<h_bins; h++)
+{
+    for (s=0; s<s_bins; s++)
+    {
+    //signature 1
+        bin_val = cvQueryHistValue_2D(hist1, h, s)
+        cv.Set2D(sig1, h*s_bins + s, 0, bin_val) #bin value
+        cv.Set2D(sig1, h*s_bins + s, 1, h)  #coord1
+        cv.Set2D(sig1, h*s_bins + s, 2, s) #coord2
 
+    //signature 2
+        bin_val2 = cv.QueryHistValue_2D(hist2, h, s)
+        cv.Set2D(sig2, h*s_bins + s, 0, bin_val2) #bin value
+        cv.Set2D(sig2, h*s_bins + s, 1, h)  #coord1
+        cv.Set2D(sig2, h*s_bins + s, 2, s) #coord2
+    }
+}
+    return (sig1, sig2);
+    
+}
+*/
 
-
+void equalization(string source, string destination)
+{
+    Mat src, dst;
+    string source_window = "Source image";
+    string equalized_window = "Equalized Image";
+    
+    /// Load image
+    src = imread( source, 1 );
+    
+    cvtColor( src, src, CV_BGR2GRAY );
+    
+    equalizeHist( src, dst );
+    
+    
+    /// Display results
+    namedWindow( source_window, CV_WINDOW_AUTOSIZE );
+    namedWindow( equalized_window, CV_WINDOW_AUTOSIZE );
+    
+    imshow( source_window, src );
+    imshow( equalized_window, dst );
+    
+    /// Wait until user exits the program
+    waitKey(0);
+    
+    imwrite( destination, dst );
+}
 
