@@ -6,14 +6,16 @@
 #include "heatmap.h"
 #include "gray.h"
 
-#include <opencv2/imgcodecs.hpp>
-#include <opencv2/videoio/videoio.hpp>
+
+//#include <opencv2/imgcodecs.hpp>
+//#include <opencv2/videoio/videoio.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/core/core.hpp>
 #include <opencv/cv.h>
 #include <opencv/cvaux.h>
 #include <opencv/highgui.h>
+
 
 
 using namespace std;
@@ -36,6 +38,7 @@ void equalization(string source, string destination);
 
 int main()
 {
+    /*
     string vide_name="134823_Feng";
     string coordinates="../Res/Video_" + vide_name + "/" + vide_name + "_coordinates.txt";
     cout<<"------generation heatmas----"<<endl;
@@ -52,6 +55,79 @@ int main()
     create_histogram("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/Equ_histogramme.png", "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/Equ_heatmap1.png");
    
     equalization("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/Equ_heatmap1.png", "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/Equ_histogramme.png");
+    
+    return 0;
+     */
+    //read 2 images for histogram comparing
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    Mat imgA, imgB;
+    imgA = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_color.png");
+    imgB = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_color_test.png");
+    
+    
+    imshow("img1", imgA);
+    imshow("img2", imgB);
+    
+    
+    //variables preparing
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    int hbins = 30, sbins = 32;
+    int channels[] = {0,  1};
+    int histSize[] = {hbins, sbins};
+    float hranges[] = { 0, 180 };
+    float sranges[] = { 0, 255 };
+    const float* ranges[] = { hranges, sranges};
+    
+    Mat patch_HSV;
+    MatND HistA, HistB;
+    
+    //cal histogram & normalization
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    cvtColor(imgA, patch_HSV, CV_BGR2HSV);
+    calcHist( &patch_HSV, 1, channels,  Mat(), // do not use mask
+             HistA, 2, histSize, ranges,
+             true, // the histogram is uniform
+             false );
+    normalize(HistA, HistA,  0, 1, CV_MINMAX);
+    
+    
+    cvtColor(imgB, patch_HSV, CV_BGR2HSV);
+    calcHist( &patch_HSV, 1, channels,  Mat(),// do not use mask
+             HistB, 2, histSize, ranges,
+             true, // the histogram is uniform
+             false );
+    normalize(HistB, HistB, 0, 1, CV_MINMAX);
+    
+    //compare histogram
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    int numrows = hbins * sbins;
+    
+    //make signature
+    Mat sig1(numrows, 3, CV_32FC1);
+    Mat sig2(numrows, 3, CV_32FC1);
+    
+    //fill value into signature
+    for(int h=0; h< hbins; h++)
+    {
+        for(int s=0; s< sbins; ++s)
+        {
+            float binval = HistA.at< float>(h,s);
+            sig1.at< float>( h*sbins + s, 0) = binval;
+            sig1.at< float>( h*sbins + s, 1) = h;
+            sig1.at< float>( h*sbins + s, 2) = s;
+            
+            binval = HistB.at< float>(h,s);
+            sig2.at< float>( h*sbins + s, 0) = binval;
+            sig2.at< float>( h*sbins + s, 1) = h;
+            sig2.at< float>( h*sbins + s, 2) = s;  
+        }  
+    }  
+    
+    //compare similarity of 2images using emd.  
+    float emd = cv::EMD(sig1, sig2, CV_DIST_L2); //emd 0 is best matching.   
+    printf("similarity %5.5f %%\n", (1-emd)*100 );  
+    
+    waitKey(0);     
     
     return 0;
 }
@@ -250,39 +326,6 @@ void create_histogram(string path_save, string image)
     imwrite( path_save, histImage );
 }
 
-/*
-Mat compute_signatures(IplImage* hist1,IplImage* hist2, int h_bins, int s_bins)
-{
-int num_rows = h_bins * s_bins;
-    
-    //Create matrices to store the signature in
-    Mat sig1(num_rows, 3, CV_32FC1);
-    Mat sig2(num_rows, 3, CV_32FC1);
-    int h,s;
-    float bin_val, bin_val2;
-    
-    //Fill signatures for the two histograms
-for (h=0; h<h_bins; h++)
-{
-    for (s=0; s<s_bins; s++)
-    {
-    //signature 1
-        bin_val = cvQueryHistValue_2D(hist1, h, s)
-        cv.Set2D(sig1, h*s_bins + s, 0, bin_val) #bin value
-        cv.Set2D(sig1, h*s_bins + s, 1, h)  #coord1
-        cv.Set2D(sig1, h*s_bins + s, 2, s) #coord2
-
-    //signature 2
-        bin_val2 = cv.QueryHistValue_2D(hist2, h, s)
-        cv.Set2D(sig2, h*s_bins + s, 0, bin_val2) #bin value
-        cv.Set2D(sig2, h*s_bins + s, 1, h)  #coord1
-        cv.Set2D(sig2, h*s_bins + s, 2, s) #coord2
-    }
-}
-    return (sig1, sig2);
-    
-}
-*/
 
 void equalization(string source, string destination)
 {
