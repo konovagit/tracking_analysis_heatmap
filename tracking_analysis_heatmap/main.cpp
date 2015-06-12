@@ -33,7 +33,7 @@ int main()
     cout<<"close windows to continue" <<endl;
     
     
-    generate_heatmap("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/134823_Feng_coordinates.txt", 5, 439);
+    //generate_heatmap("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/134823_Feng_coordinates.txt", 5, 439);
     
     string imageName = "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap.png";
     string imageName2 = "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap9.png";
@@ -41,8 +41,8 @@ int main()
     ////Comparison///
     double psnrV;
     Scalar mssimV;
-    string reference="/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap1.png";
-    string compar="/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap2.png";
+    string reference="/Users/konova/tracking_analysis_heatmap/Res/heatmap_eq.png";
+    string compar="/Users/konova/tracking_analysis_heatmap/Res/heatmap_eq5R25.png";
     
     Mat Reference= imread(reference, CV_LOAD_IMAGE_GRAYSCALE);
     Mat Compar= imread(compar, CV_LOAD_IMAGE_GRAYSCALE);
@@ -50,7 +50,7 @@ int main()
     psnrV = getPSNR(Reference,Compar);
     cout<<"Resultat comparison:"<<psnrV<<"%"<<endl;
 
-    
+    /*
     // DIFF
      Mat diff=diff_heatmap(Reference, Compar);
      IplImage *img;
@@ -67,7 +67,7 @@ int main()
      }
      // Destroy the window we have created
      cvDestroyWindow("difference between Two heatmap");
-    
+    */
     
     return 0;
 }
