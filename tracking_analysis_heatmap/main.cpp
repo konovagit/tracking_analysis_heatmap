@@ -29,6 +29,8 @@ double getPSNR(const Mat& I1, const Mat& I2); //for the comparison
 
 void create_histogram(string path_save, string image);
 
+void equalization(string source, string destination);
+
 
 
 int main()
@@ -40,15 +42,15 @@ int main()
     
     
     generate_heatmap("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/134823_Feng_coordinates.txt", 5, 439);
-    string imageName = "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap.png";
+    string imageName = "/Users/konova/tracking_analysis_heatmap/Res/heatmap.png";
     string imageName2 = "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap9.png";
     
     
-    conversion_grayscale(imageName2);
+    //conversion_grayscale(imageName2);
     
-    create_histogram("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/histogramme.png", "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap.png");
+    //create_histogram("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/histogramme.png", "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap.png");
 
-    
+    equalization("/Users/konova/tracking_analysis_heatmap/Res/heatmap_color5.png", "/Users/konova/tracking_analysis_heatmap/Res/heatmap_eq5.png");
     
     return 0;
 }
@@ -249,5 +251,18 @@ void create_histogram(string path_save, string image)
 
 
 
-
+void equalization(string source, string destination)
+{
+    Mat src, dst;
+    
+    /// Load image
+    src = imread( source, 1 );
+    
+    /// Convert to grayscale
+    cvtColor( src, src, CV_BGR2GRAY );
+    /// Apply Histogram Equalization
+    equalizeHist( src, dst );
+    
+    imwrite( destination, dst );
+}
 
