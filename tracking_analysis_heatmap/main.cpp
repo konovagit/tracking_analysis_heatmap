@@ -57,9 +57,9 @@ int main()
     
     /// Load three images with different environment settings
  
-    src_base = imread( "/Users/konova/tracking_analysis_heatmap/Res/heatmap_color", 1 );
-    src_test1 = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_color2", 1 );
-    src_test2 = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_color3", 1 );
+    src_base = imread( "/Users/konova/tracking_analysis_heatmap/Res/heatmap_color.png", 1 );
+    src_test1 = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_color4.png", 1 );
+    src_test2 = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_color5.png", 1 );
     
     /// Convert to HSV
     cvtColor( src_base, hsv_base, COLOR_BGR2HSV );
