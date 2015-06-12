@@ -61,8 +61,8 @@ int main()
     //read 2 images for histogram comparing
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     Mat imgA, imgB;
-    imgA = imread("/Users/konova/tracking_analysis_heatmap/Res/test.png");
-    imgB = imread("/Users/konova/tracking_analysis_heatmap/Res/test2.png");
+    imgA = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_color.png");
+    imgB = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_color5.png");
     
     
     imshow("img1", imgA);
