@@ -61,13 +61,14 @@ int main()
     //read 2 images for histogram comparing
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     Mat imgA, imgB;
-    imgA = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_color.png");
-    imgB = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_color_test.png");
+    imgA = imread("/Users/konova/tracking_analysis_heatmap/Res/test.png");
+    imgB = imread("/Users/konova/tracking_analysis_heatmap/Res/test2.png");
     
     
     imshow("img1", imgA);
     imshow("img2", imgB);
     
+    waitKey(0);
     
     //variables preparing
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -97,7 +98,7 @@ int main()
              true, // the histogram is uniform
              false );
     normalize(HistB, HistB, 0, 1, CV_MINMAX);
-    
+
     //compare histogram
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     int numrows = hbins * sbins;
@@ -124,8 +125,9 @@ int main()
     }  
     
     //compare similarity of 2images using emd.  
-    float emd = cv::EMD(sig1, sig2, CV_DIST_L2); //emd 0 is best matching.   
-    printf("similarity %5.5f %%\n", (1-emd)*100 );  
+    float emd = EMD(sig1, sig2, CV_DIST_L2); //emd 0 is best matching.
+    printf("similarity %5.5f %%\n", (1-emd)*100 );
+    printf("EMD %f",emd);
     
     waitKey(0);     
     
