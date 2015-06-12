@@ -62,7 +62,7 @@ int main()
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     Mat imgA, imgB;
     imgA = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_eq.png");
-    imgB = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_eqR25.png");
+    imgB = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_eq5R25.png");
     
     
     imshow("img1", imgA);
