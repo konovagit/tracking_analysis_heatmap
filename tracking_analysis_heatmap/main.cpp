@@ -58,8 +58,8 @@ int main()
     /// Load three images with different environment settings
  
     hsv_base = imread( "/Users/konova/tracking_analysis_heatmap/Res/heatmap_eq.png", 1 );
-    hsv_test1 = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_eq3R25.png", 1 );
-    hsv_test2 = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_eq4R25.png", 1 );
+    hsv_test1 = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_eq4R25_X.png", 1 );
+    hsv_test2 = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_eq5R25_X.png", 1 );
     
     /// Convert to HSV
    // cvtColor( src_base, hsv_base, COLOR_BGR2HSV );
