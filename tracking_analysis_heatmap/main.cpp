@@ -42,7 +42,7 @@ int main()
     double psnrV;
     Scalar mssimV;
     string reference="/Users/konova/tracking_analysis_heatmap/Res/heatmap_eq.png";
-    string compar="/Users/konova/tracking_analysis_heatmap/Res/heatmap_eq5R25.png";
+    string compar="/Users/konova/tracking_analysis_heatmap/Res/heatmap_eq5R25_X.png";
     
     Mat Reference= imread(reference, CV_LOAD_IMAGE_GRAYSCALE);
     Mat Compar= imread(compar, CV_LOAD_IMAGE_GRAYSCALE);
