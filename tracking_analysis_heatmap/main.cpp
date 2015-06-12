@@ -61,8 +61,8 @@ int main()
     //read 2 images for histogram comparing
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     Mat imgA, imgB;
-    imgA = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_eq.png");
-    imgB = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_eq5R25.png");
+    imgA = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_color.png");
+    imgB = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_color5test.png");
     
     
     imshow("img1", imgA);
@@ -85,6 +85,7 @@ int main()
     //cal histogram & normalization
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //cvtColor(imgA, patch_HSV, CV_BGR2HSV);
+    
     calcHist( &imgA, 1, channels,  Mat(), // do not use mask
              HistA, 2, histSize, ranges,
              true, // the histogram is uniform
