@@ -25,7 +25,6 @@ void conversion_grayscale(string png_name);
 
 IplImage* histogram(IplImage *image);
 
-double getPSNR(const Mat& I1, const Mat& I2); //for the comparison
 
 void create_histogram(string path_save, string image);
 
@@ -50,7 +49,7 @@ int main()
     
     //create_histogram("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/histogramme.png", "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap.png");
 
-    equalization("/Users/konova/tracking_analysis_heatmap/Res/heatmap_color5.png", "/Users/konova/tracking_analysis_heatmap/Res/heatmap_eq5.png");
+    //equalization("/Users/konova/tracking_analysis_heatmap/Res/heatmap_color5.png", "/Users/konova/tracking_analysis_heatmap/Res/heatmap_eq5.png");
     
     return 0;
 }
