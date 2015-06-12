@@ -61,8 +61,8 @@ int main()
     //read 2 images for histogram comparing
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     Mat imgA, imgB;
-    imgA = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_color.png");
-    imgB = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_color5.png");
+    imgA = imread("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap.png");
+    imgB = imread("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmapcop.png");
     
     
     imshow("img1", imgA);
@@ -84,16 +84,16 @@ int main()
     
     //cal histogram & normalization
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    cvtColor(imgA, patch_HSV, CV_BGR2HSV);
-    calcHist( &patch_HSV, 1, channels,  Mat(), // do not use mask
+    //cvtColor(imgA, patch_HSV, CV_BGR2HSV);
+    calcHist( &imgA, 1, channels,  Mat(), // do not use mask
              HistA, 2, histSize, ranges,
              true, // the histogram is uniform
              false );
     normalize(HistA, HistA,  0, 1, CV_MINMAX);
     
     
-    cvtColor(imgB, patch_HSV, CV_BGR2HSV);
-    calcHist( &patch_HSV, 1, channels,  Mat(),// do not use mask
+    //cvtColor(imgB, patch_HSV, CV_BGR2HSV);
+    calcHist( &imgB, 1, channels,  Mat(),// do not use mask
              HistB, 2, histSize, ranges,
              true, // the histogram is uniform
              false );
