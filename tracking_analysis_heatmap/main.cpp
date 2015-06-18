@@ -119,6 +119,22 @@ int main()
     
     printf( "Done \n" );*/
     
+    vector<int> array,array2;
+    Mat image = imread( "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap.png", 1 );
+    Mat image2 = imread( "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap.png", 1 );
+    
+    array.assign(image.datastart, image.dataend);
+    array2.assign(image2.datastart, image2.dataend);
+    
+    //vector<float> array2;
+    //array.assign((float*)image.datastart, (float*)image.dataend);
+    
+    float resultat;
+    //array2.converTo(array2, CV_32F);
+    
+    resultat=compareHist(array, array, CV_COMP_BHATTACHARYYA);
+    printf("Resultat:%f",resultat);
+    
    
     return 0;
 }
