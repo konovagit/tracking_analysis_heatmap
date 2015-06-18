@@ -50,6 +50,10 @@ int main()
     create_histogram("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/histogramme.png", "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap.png");
     */
     
+    /*
+     vector<uchar> array;
+     Mat image = imread( "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap.png", 1 ); //grayscale equalized
+     array.assign(image.datastart, image.dataend);
     Mat src_base, hsv_base;
     Mat src_test1, hsv_test1;
     Mat src_test2, hsv_test2;
@@ -57,7 +61,7 @@ int main()
     
     /// Load three images with different environment settings
  
-    hsv_base = imread( "/Users/konova/tracking_analysis_heatmap/Res/heatmap_eq.png", 1 );
+    hsv_base = imread( "/Users/konova/tracking_analysis_heatmap/Res/heatmap_eq.png", 1 ); //grayscale equalized
     hsv_test1 = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_eq4R25_X.png", 1 );
     hsv_test2 = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_eq5R25_X.png", 1 );
     
@@ -104,7 +108,7 @@ int main()
     /// Apply the histogram comparison methods
     for( int i = 0; i < 4; i++ )
     {
-        int compare_method = i;
+        int compare_method = i;    //0 Correlation //1 Chi-Square //2 Intersection //3 Bhattacharyya distance
         double base_base = compareHist( hist_base, hist_base, compare_method );
         double base_half = compareHist( hist_base, hist_half_down, compare_method );
         double base_test1 = compareHist( hist_base, hist_test1, compare_method );
@@ -113,9 +117,9 @@ int main()
         printf( " Method [%d] Perfect, Base-Half, Base-Test(1), Base-Test(2) : %f, %f, %f, %f \n", i, base_base, base_half , base_test1, base_test2 );
     }
     
-    printf( "Done \n" );
+    printf( "Done \n" );*/
     
-    
+   
     return 0;
 }
 
@@ -312,6 +316,7 @@ void create_histogram(string path_save, string image)
     //save histogram
     imwrite( path_save, histImage );
 }
+
 
 
 
