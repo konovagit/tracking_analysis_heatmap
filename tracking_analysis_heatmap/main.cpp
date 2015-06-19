@@ -25,21 +25,23 @@ int main()
 {
    
     
-    vector<int> array,array2,res;
+    vector<float> array,array2,res;
     Mat image = imread( "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/Equ_heatmap1.png", 1 );
-    Mat image2 = imread( "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/Equ_heatmap3.png", 1 );
+    Mat image2 = imread( "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/Equ_heatmap4.png", 1 );
+    image.convertTo(image, CV_32F);   //need to transform image CV_8U to CV_32F to use comparehist
+    image2.convertTo(image2, CV_32F);
     
-    array.assign(image.datastart, image.dataend);
+    array.assign(image.datastart, image.dataend);  //i send all pixels in the vector
     array2.assign(image2.datastart, image2.dataend);
     
-    for (vector<int>::iterator it = array.begin() ; it != array.end(); ++it)
+    for (vector<float>::iterator it = array.begin() ; it != array.end(); ++it)   //adjust vector with 0 or 1
     {
         if((*it)>0)
         {
             (*it)=1;
         }
     }
-    for (vector<int>::iterator it = array2.begin() ; it != array2.end(); ++it)
+    for (vector<float>::iterator it = array2.begin() ; it != array2.end(); ++it)  //adjust vector with 0 or 1
     {
         if((*it)>0)
         {
@@ -78,8 +80,11 @@ int main()
 
     cout<<norm(array,array2);
     
-    //resultat=compareHist(array, array2, CV_COMP_BHATTACHARYYA);
-    //printf("Resultat:%f",resultat);
+    //float emd = EMD(array, array2, CV_DIST_L2);
+    //cout<<emd;
+    
+    resultat=compareHist(array, array2, CV_COMP_BHATTACHARYYA);
+    printf("Resultat:%f",resultat);
     
    
     return 0;
