@@ -74,10 +74,11 @@ int main()
     else cerr << "Impossible d'ouvrir le fichier !" << endl;
     */
     
-    //double resultat;
+    float resultat;
 
     cout<<norm(array,array2);
-    //resultat=compareHist(array, array, CV_COMP_BHATTACHARYYA);
+    
+    //resultat=compareHist(array, array2, CV_COMP_BHATTACHARYYA);
     //printf("Resultat:%f",resultat);
     
    
