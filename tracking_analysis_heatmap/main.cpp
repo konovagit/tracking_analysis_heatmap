@@ -32,18 +32,18 @@ int main()
     array.assign(image.datastart, image.dataend);  //i send all pixels in the vector
     array2.assign(image2.datastart, image2.dataend);
     
-    for (vector<float>::iterator it = array.begin() ; it != array.end(); ++it)   //adjust vector with 0 or 1
+    for (vector<float>::iterator it = array.begin() ; it != array.end(); ++it)   //adjust vector  0 to 1
     {
         if((*it)>0)
         {
-            (*it)=1;
+            (*it)/=255;
         }
     }
-    for (vector<float>::iterator it = array2.begin() ; it != array2.end(); ++it)  //adjust vector with 0 or 1
+    for (vector<float>::iterator it = array2.begin() ; it != array2.end(); ++it)  //adjust vector  0 to 1
     {
         if((*it)>0)
         {
-            (*it)=1;
+            (*it)/=255;
         }
     }
     
