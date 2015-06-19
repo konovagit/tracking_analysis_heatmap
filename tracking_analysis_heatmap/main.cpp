@@ -23,11 +23,9 @@ using namespace cv;
 
 int main()
 {
-   
-    
     vector<float> array,array2,res;
-    Mat image = imread( "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/Equ_heatmap1.png", 1 );
-    Mat image2 = imread( "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/Equ_heatmap2.png", 1 );
+    Mat image = imread( "/Users/konova/tracking_analysis_heatmap/Res/heatmap_gray.png", 1 );
+    Mat image2 = imread( "/Users/konova/tracking_analysis_heatmap/Res/heatmap_gray7.png", 1 );
     image.convertTo(image, CV_32F);   //need to transform image CV_8U to CV_32F to use comparehist
     image2.convertTo(image2, CV_32F);
     
@@ -78,13 +76,20 @@ int main()
     
     float resultat;
 
-    cout<<norm(array,array2);
+    cout<<"Euclidian"<<norm(array,array2)<<endl;
     
     //float emd = EMD(array, array2, CV_DIST_L2);
     //cout<<emd;
     
+    resultat=compareHist(array, array2, CV_COMP_CORREL);
+    cout<<"correlation: "<<resultat<<endl;
+    resultat=compareHist(array, array2,  CV_COMP_CHISQR);
+    cout<<"Chi-Square: "<<resultat<<endl;
+    resultat=compareHist(array, array2,  CV_COMP_INTERSECT );
+    cout<<"Intersection: "<<resultat<<endl;
     resultat=compareHist(array, array2, CV_COMP_BHATTACHARYYA);
-    cout<<resultat;
+    cout<<"Bhattacharyya distance: "<<resultat<<endl;
+    
     
    
     return 0;
