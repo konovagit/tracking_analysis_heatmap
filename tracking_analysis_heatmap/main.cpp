@@ -25,7 +25,7 @@ int main()
 {
     vector<float> array,array2,res;
     Mat image = imread( "/Users/konova/tracking_analysis_heatmap/Res/heatmap_gray.png", 1 );
-    Mat image2 = imread( "/Users/konova/tracking_analysis_heatmap/Res/heatmap_gray7.png", 1 );
+    Mat image2 = imread( "/Users/konova/tracking_analysis_heatmap/Res/heatmap_gray2.png", 1 );
     image.convertTo(image, CV_32F);   //need to transform image CV_8U to CV_32F to use comparehist
     image2.convertTo(image2, CV_32F);
     
@@ -74,13 +74,34 @@ int main()
     else cerr << "Impossible d'ouvrir le fichier !" << endl;
     */
     
+    int hbins = 30, sbins = 32;
+    int numrows = hbins * sbins;
+    //make signature
+    Mat sig1(numrows, 3, CV_32FC1);
+    Mat sig2(numrows, 3, CV_32FC1);
+    
+    //fill value into signature
+    for(int h=0; h< hbins; h++)
+    {
+        for(int s=0; s< sbins; ++s)
+        {
+            float binval = array.at<float>(h,s);
+            sig1.at< float>( h*sbins + s, 0) = binval;
+            sig1.at< float>( h*sbins + s, 1) = h;
+            sig1.at< float>( h*sbins + s, 2) = s;
+            
+            binval = array2.at<float>(h,s);
+            sig2.at< float>( h*sbins + s, 0) = binval;
+            sig2.at< float>( h*sbins + s, 1) = h;
+            sig2.at< float>( h*sbins + s, 2) = s;  
+        }  
+    }
+    float emd = EMD(A, A2, CV_DIST_L2);
+    cout<<"EMD:"<<emd<<endl;
+    
     float resultat;
 
     cout<<"Euclidian"<<norm(array,array2)<<endl;
-    
-    //float emd = EMD(array, array2, CV_DIST_L2);
-    //cout<<emd;
-    
     resultat=compareHist(array, array2, CV_COMP_CORREL);
     cout<<"correlation: "<<resultat<<endl;
     resultat=compareHist(array, array2,  CV_COMP_CHISQR);
