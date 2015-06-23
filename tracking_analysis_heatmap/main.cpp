@@ -23,6 +23,7 @@ using namespace cv;
 
 int main()
 {
+    /*
     vector<float> array,array2,res;
     Mat image = imread( "/Users/konova/tracking_analysis_heatmap/Res/heatmap_gray.png", 1 );
     Mat image2 = imread( "/Users/konova/tracking_analysis_heatmap/Res/heatmap_gray2.png", 1 );
@@ -46,7 +47,7 @@ int main()
             (*it)/=255;
         }
     }
-    
+    */
     //int count;
     /*
     ofstream fichier("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/comparison.txt", ios::out | ios::trunc);
@@ -74,33 +75,67 @@ int main()
     else cerr << "Impossible d'ouvrir le fichier !" << endl;
     */
     
-    int hbins = 30, sbins = 32;
-    int numrows = hbins * sbins;
+    //read 2 images for histogram comparing
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    Mat imgA, imgB;
+    imgA = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_gray.png");
+    imgB = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap_gray2.png");
+    
+    
+    //imshow("img1", imgA);
+    //imshow("img2", imgB);
+    
+    
+    //variables preparing
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    int hbins = 720, vbins = 720;
+  
+
+    //normalization
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    normalize(imgA, imgA,  0, 1, CV_MINMAX);
+    
+    normalize(imgB, imgB, 0, 1, CV_MINMAX);
+    
+    //compare histogram
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    int numrows = hbins * vbins;
+    
     //make signature
-    Mat sig1(numrows, 3, CV_32FC1);
+    Mat sig1(numrows, 3, CV_32FC1);    //row, col, type
     Mat sig2(numrows, 3, CV_32FC1);
     
-    //fill value into signature
+    //fill value into signature       //Signature= bins value, index x, index y
     for(int h=0; h< hbins; h++)
     {
-        for(int s=0; s< sbins; ++s)
+        for(int s=0; s< vbins; ++s)
         {
-            float binval = array.at<float>(h,s);
-            sig1.at< float>( h*sbins + s, 0) = binval;
-            sig1.at< float>( h*sbins + s, 1) = h;
-            sig1.at< float>( h*sbins + s, 2) = s;
+            float binval = imgA.at< float>(h,s);  //bins value
             
-            binval = array2.at<float>(h,s);
-            sig2.at< float>( h*sbins + s, 0) = binval;
-            sig2.at< float>( h*sbins + s, 1) = h;
-            sig2.at< float>( h*sbins + s, 2) = s;  
+            //Formating
+            sig1.at< float>( h*vbins + s, 0) = binval;
+            sig1.at< float>( h*vbins + s, 1) = h;
+            sig1.at< float>( h*vbins + s, 2) = s;
+            
+            binval = imgB.at< float>(h,s);      //bins value
+            
+            //Formating
+            sig2.at< float>( h*vbins + s, 0) = binval;
+            sig2.at< float>( h*vbins + s, 1) = h;
+            sig2.at< float>( h*vbins + s, 2) = s;
         }  
-    }
-    float emd = EMD(A, A2, CV_DIST_L2);
-    cout<<"EMD:"<<emd<<endl;
+    }  
     
+    //compare similarity of 2images using emd.  
+    float emd = EMD(sig1, sig2, CV_DIST_L2); //emd 0 is best matching.
+    cout<<"EMD: "<<emd<<endl;
+   // printf("similarity %5.5f %%\n", (1-emd)*100 );
+    
+    
+/*
+ 
     float resultat;
-
     cout<<"Euclidian"<<norm(array,array2)<<endl;
     resultat=compareHist(array, array2, CV_COMP_CORREL);
     cout<<"correlation: "<<resultat<<endl;
@@ -110,7 +145,7 @@ int main()
     cout<<"Intersection: "<<resultat<<endl;
     resultat=compareHist(array, array2, CV_COMP_BHATTACHARYYA);
     cout<<"Bhattacharyya distance: "<<resultat<<endl;
-    
+ */
     
    
     return 0;
