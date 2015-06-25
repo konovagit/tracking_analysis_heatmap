@@ -35,16 +35,20 @@ long comparison(Pixel pixel,Mat image1, Mat image2);
 int main()
 {
    
-    string image="/Users/konova/tracking_analysis_heatmap/Res/heatmap_gray.png";
-    string image2="/Users/konova/tracking_analysis_heatmap/Res/heatmap_gray.png";
+    string image="/Users/konova/tracking_analysis_heatmap/Res/heatmap_color.png";
+    string image2="/Users/konova/tracking_analysis_heatmap/Res/heatmap_color2.png";
     
     //Resize image
     Size size(100,100);//the dst image size,e.g.100x100
-    Mat img=imread(image, CV_LOAD_IMAGE_GRAYSCALE);
-    Mat img2=imread(image2, CV_LOAD_IMAGE_GRAYSCALE);
+    Mat img=imread(image, CV_LOAD_IMAGE_COLOR);
+    Mat img2=imread(image2, CV_LOAD_IMAGE_COLOR);
     
     resize(img,img,size);//resize image
     resize(img2,img2,size);//resize image
+    
+    imwrite("/Users/konova/tracking_analysis_heatmap/Res/heatmap_gray_small.png", img);
+    imwrite("/Users/konova/tracking_analysis_heatmap/Res/heatmap_gray6_small.png", img2);
+    
     long distance=0;
     distance=scrutation(img,img2);
     cout<<"Distance:"<<distance<<endl;
@@ -60,10 +64,10 @@ long scrutation(Mat image1, Mat image2)
     {
         for (int j=0; j<(size_height-1); j++) //Cols
         {
-            pixel.intensity=image1.at<float>(i,j);
+            pixel.intensity=image1.at<uchar>(i,j);
             pixel.x=i;
             pixel.y=j;
-            if(pixel.intensity==0 || pixel.intensity==image2.at<float>(i,j))
+            if(pixel.intensity==image2.at<uchar>(i,j))
             {
                 //nothing
             }
@@ -76,7 +80,9 @@ long scrutation(Mat image1, Mat image2)
 long comparison(Pixel pixel,Mat image1, Mat image2)
 {
     int row=0, col=0;
-    long distance=32000000;
+    long distance=0;
+    char match=0;
+    
     Point2f a(pixel.x,pixel.y);
     
     for ( int i=(pixel.x-area); row<(area_width); i++ )  //Rows
@@ -87,21 +93,29 @@ long comparison(Pixel pixel,Mat image1, Mat image2)
            {
                         //nothing out of the image
            }
-           else if(image2.at<float>(i,j)==pixel.intensity)
+           else if(image2.at<uchar>(i,j)==pixel.intensity)
            {
                Point2f b(i,j);
-               if (((norm(Mat(a), Mat(b))<distance)))
+               if (distance==0) {
+                   distance= norm(Mat(a), Mat(b));
+               }
+               else //if (((norm(Mat(a), Mat(b))<distance)))
                {
                    distance= norm(Mat(a), Mat(b));
                }
+               match++;
            }
            col++;
         }
         row++;
         col=0;
     }
+    if(match>0)
+    {
+        return distance;
+    }
+    else return distance+25;
     
-    return distance;  //distance min
 }
 
 
