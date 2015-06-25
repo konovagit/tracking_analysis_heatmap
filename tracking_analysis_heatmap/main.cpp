@@ -23,12 +23,53 @@ using namespace cv;
 
 int main()
 {
-    /*
-    vector<float> array,array2,res;
+    vector<float> array,array2;
     Mat image = imread( "/Users/konova/tracking_analysis_heatmap/Res/heatmap_gray.png", 1 );
     Mat image2 = imread( "/Users/konova/tracking_analysis_heatmap/Res/heatmap_gray2.png", 1 );
+    
     image.convertTo(image, CV_32F);   //need to transform image CV_8U to CV_32F to use comparehist
     image2.convertTo(image2, CV_32F);
+    
+   
+    //float array2d[720][720];
+    //float array2dbis[720][720];
+    vector< vector<float> > matrix;
+    //now we have an empty 2D-matrix of size (0,0). Resizing it with one single command:
+    matrix.resize( 720 , vector<float>( 720 , 0 ) );
+    
+    vector< vector<float> > matrix2;
+    //now we have an empty 2D-matrix of size (0,0). Resizing it with one single command:
+    matrix2.resize( 720 , vector<float>( 720 , 0 ) );
+
+    
+    for (int i=0; i<719; i++)  //rows
+    {
+        for (int j=0; j<719; j++)  //cols
+        {
+            //array2d[i][j]=image.at< float>(i,j);  //bins value
+            if((image.at< float>(i,j))>0)
+            {
+                matrix[i][j]=(image.at< float>(i,j))/255;
+            }
+            else matrix[i][j]=image.at< float>(i,j);
+        }
+    }
+    
+    for (int i=0; i<719; i++)
+    {
+        for (int j=0; j<719; j++)
+        {
+            //array2dbis[i][j]=image2.at< float>(i,j);  //bins value
+            if((image2.at< float>(i,j))>0)
+            {
+                matrix[i][j]=(image2.at< float>(i,j))/255;
+            }
+            else matrix[i][j]=image2.at< float>(i,j);
+        }
+    }
+    
+
+   /*
     
     array.assign(image.datastart, image.dataend);  //i send all pixels in the vector
     array2.assign(image2.datastart, image2.dataend);
@@ -74,7 +115,7 @@ int main()
     }
     else cerr << "Impossible d'ouvrir le fichier !" << endl;
     */
-    
+  /*
     //read 2 images for histogram comparing
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     Mat imgA, imgB;
@@ -85,7 +126,7 @@ int main()
     //imshow("img1", imgA);
     //imshow("img2", imgB);
     
-    
+ 
     //variables preparing
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     int hbins = 720, vbins = 720;
@@ -131,21 +172,21 @@ int main()
     float emd = EMD(sig1, sig2, CV_DIST_L2); //emd 0 is best matching.
     cout<<"EMD: "<<emd<<endl;
    // printf("similarity %5.5f %%\n", (1-emd)*100 );
+   */
     
-    
-/*
+
  
     float resultat;
-    cout<<"Euclidian"<<norm(array,array2)<<endl;
-    resultat=compareHist(array, array2, CV_COMP_CORREL);
+    cout<<"Euclidian: "<<norm(image,image2)<<endl;
+    resultat=compareHist(image, image2, CV_COMP_CORREL);
     cout<<"correlation: "<<resultat<<endl;
-    resultat=compareHist(array, array2,  CV_COMP_CHISQR);
+    resultat=compareHist(matrix, matrix2,  CV_COMP_CHISQR);
     cout<<"Chi-Square: "<<resultat<<endl;
-    resultat=compareHist(array, array2,  CV_COMP_INTERSECT );
+    resultat=compareHist(matrix, matrix2,  CV_COMP_INTERSECT );
     cout<<"Intersection: "<<resultat<<endl;
-    resultat=compareHist(array, array2, CV_COMP_BHATTACHARYYA);
+    resultat=compareHist(matrix, matrix2, CV_COMP_BHATTACHARYYA);
     cout<<"Bhattacharyya distance: "<<resultat<<endl;
- */
+ 
     
    
     return 0;
