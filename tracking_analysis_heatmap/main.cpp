@@ -28,7 +28,7 @@ struct Pixel{
 };
 
 long scrutation(Mat image1, Mat image2);
-long comparison(Pixel pixel,Mat image1, Mat image2);
+long comparison(Pixel pixel, Mat image2);
 
 
 
@@ -46,9 +46,6 @@ int main()
     resize(img,img,size);//resize image
     resize(img2,img2,size);//resize image
     
-  //imwrite("/Users/konova/tracking_analysis_heatmap/Res/heatmap_gray_small.png", img);
-  //imwrite("/Users/konova/tracking_analysis_heatmap/Res/heatmap_gray6_small.png", img2);
-    
     long distance=0;
     distance=scrutation(img,img2);
     cout<<"Distance:"<<distance<<endl;
@@ -58,8 +55,11 @@ int main()
 
 long scrutation(Mat image1, Mat image2)
 {
+    /*Variables*/
     Pixel pixel;
     long distance=0;
+    
+    /*Image Model LOOP*/
     for (int i=0; i<(size_width-1); i++)  //Rows
     {
         for (int j=0; j<(size_height-1); j++) //Cols
@@ -71,20 +71,22 @@ long scrutation(Mat image1, Mat image2)
             {
                 //nothing
             }
-            else distance+=comparison(pixel, image1, image2);
+            else distance+=comparison(pixel, image2);
         }
     }
     return distance;
 }
 
-long comparison(Pixel pixel,Mat image1, Mat image2)
+long comparison(Pixel pixel,Mat image2) //pixel => struc image model   //image2 =>image for comparison
+
 {
+    /*Variables*/
     int row=0, col=0;
     long distance=0;
-    long match=0;
-    Pixel pixel2=pixel;
-  
+    Pixel pixel2=pixel; //set pixel2 at the value of model
     
+    
+    /*Area LOOP*/
     for ( int i=(pixel.x-area); row<(area_width); i++ )  //Rows
     {
        for ( int j=(pixel.y-area); col<(area_height); j++ ) //Cols
@@ -95,14 +97,14 @@ long comparison(Pixel pixel,Mat image1, Mat image2)
            }
            else if(image2.at<uchar>(i,j)== pixel.intensity)
            {
-               return distance=0;
+                return distance=0;   //one pixel match
            }
-           else if (pixel2.intensity==pixel.intensity)
+           else if (pixel2.intensity==pixel.intensity)  //first loop
            {
                pixel2.intensity=image2.at<uchar>(i,j);
                distance=(abs(pixel2.intensity-pixel.intensity));
            }
-           else if((abs(image2.at<uchar>(i,j)-pixel.intensity)<distance))
+           else if((abs(image2.at<uchar>(i,j)-pixel.intensity)<distance))  //update distance if --
            {
                        distance=abs(image2.at<uchar>(i,j)-pixel.intensity);
            }
