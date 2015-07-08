@@ -1,8 +1,5 @@
 dependencies: \
   /Users/konova/tracking_analysis_heatmap/tracking_analysis_heatmap/main.cpp \
-  /Users/konova/tracking_analysis_heatmap/lodepng.h \
-  /Users/konova/tracking_analysis_heatmap/heatmap.h \
-  /Users/konova/tracking_analysis_heatmap/gray.h \
   /usr/local/include/opencv2/highgui/highgui.hpp \
   /usr/local/include/opencv2/core/core.hpp \
   /usr/local/include/opencv2/core/types_c.h \
