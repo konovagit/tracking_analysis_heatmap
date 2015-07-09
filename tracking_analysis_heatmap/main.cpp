@@ -17,46 +17,56 @@
 using namespace std;
 using namespace cv;
 
-void generate_heatmap(string filename, double begin, double end);
 
-void conversion_grayscale(string png_name);
+//Configurations
+#define size_width 1280
+#define size_height 720
+
+#define area_width 11
+#define area_height 11
+#define area 5
+
+// Size of heat map. Must be the same that the video.
+static const size_t w = 1280, h = 720;
+
+struct Pixel{
+    int x;
+    int y;
+    float intensity;
+};
+//End configuration
+
+Mat new_matrix;
+void generate_heatmap(string filename, double begin, double end);
+void generate_heatmap_bis(Mat new_matrix);
+
+long comparison(Pixel pixel,Mat image);
+
+Mat scrutation(Mat image);
+
 
 
 int main()
 {
 
-    
     generate_heatmap("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/FeetLocations_bis.txt", 0, 2062);
+    generate_heatmap_bis(new_matrix);
     
     //Superposition//
     Mat dst;
-    Mat src1 = imread("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap_garden.png");
-    Mat src2 = imread("/Users/konova/tracking_analysis_heatmap/Res/heatmap.png");
+    Mat src1 = imread("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap_new_matrix.png");
+    Mat src2 = imread("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/background_garden.png");
     addWeighted( src1, 0.5, src2, 0.5, 0.0, dst);
-    imwrite( "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/garden_heatmap_result.png", dst );
-    
+    imwrite( "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/garden_heatmap_original_result.png", dst );
+
 
     return 0;
 }
 
-void conversion_grayscale(string png_name)
-{
-    Mat image = imread(png_name, CV_LOAD_IMAGE_COLOR);
-    if(! image.data )
-    {
-        cout <<  "Could not open or find the image" << endl ;
-    }
-    // Create a new matrix to hold the gray image
-    Mat gray;
-    // convert RGB image to gray
-    cvtColor(image, gray, CV_BGR2GRAY);
-    imwrite( png_name, gray );
-}
-
-
 
 void generate_heatmap(string filename, double begin, double end)
 {
+
     // To write on specific files for each couple (begin,end).
     string b = to_string((int)begin), e = to_string((int)end);
     
@@ -65,11 +75,12 @@ void generate_heatmap(string filename, double begin, double end)
     string heatmap_img = "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap_garden.png"; // where the heatmap will be saved
     string background_img = "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/background_garden.png";
     
-    // Size of heat map. Must be the same that the video.
-    static const size_t w = 1280, h = 720;
-    
     // Create the heatmap object with the given dimensions (in pixel).
     heatmap_t* hm = heatmap_new(w, h);
+    
+
+    // Create a matrix (rows, cols, type, initial value)
+    Mat matrix( h, w, CV_8UC1, Scalar(0) );
     
     //Mat result;
     string line, pos_x, pos_y, time_msec, fps, nb_frames;
@@ -140,11 +151,16 @@ void generate_heatmap(string filename, double begin, double end)
                         
                         if (ftime_msec >= begin && ftime_msec <= end)
                         {
-                            heatmap_add_point(hm, x, y);
-                        }
+                           //heatmap_add_point(hm, x, y);
+                           matrix.at<uchar>(y,x)+=1;  //add 1 each time pixel is activated
+                         }
                     }
                     i++;
                 }
+                imwrite( "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/TEST.png", matrix );
+                
+                new_matrix=scrutation(matrix);
+                imwrite( "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/new_matrix.png", matrix );
                 // This creates an image out of the heatmap.
                 // `image` now contains the image data in 32-bit RGBA.
                 vector<unsigned char> image(w*h * 4);
@@ -162,4 +178,98 @@ void generate_heatmap(string filename, double begin, double end)
         }
     }
 }
+
+Mat scrutation(Mat image)
+{
+    /*Variables*/
+    Pixel pixel;
+    /*Image Model LOOP*/
+    for (int i=0; i<(size_width-1); i++)  //Rows
+    {
+        for (int j=0; j<(size_height-1); j++) //Cols
+        {
+            pixel.intensity=image.at<uchar>(j,i);
+            pixel.x=i;
+            pixel.y=j;
+            if(image.at<uchar>(j,i)==0)
+            {
+                //nothing
+            }
+            else
+            {
+              image.at<uchar>(j,i)=comparison(pixel, image);
+            }//values aroundit
+        }
+    }
+    return image;
+}
+
+long comparison(Pixel pixel,Mat image)
+
+{
+    /*Variables*/
+    int row=0, col=0;
+    long distance=0;
+    
+    
+    /*Area LOOP*/
+    for ( int i=(pixel.x-area); row<(area_width); i++ )  //Rows
+    {
+        for ( int j=(pixel.y-area); col<(area_height); j++ ) //Cols
+        {
+            if ((i<0) || (j<0) || (i>719) || (j>1279))
+            {
+                //nothing out of the image
+            }
+            else {distance+=image.at<uchar>(j,i);}
+            
+            col++;
+        }
+        row++;
+        col=0;
+    }
+    
+    return (distance-pixel.intensity);
+}
+
+
+
+void generate_heatmap_bis(Mat new_matrix)
+{
+    // Create the heatmap object with the given dimensions (in pixel).
+    heatmap_t* hm = heatmap_new(w, h);
+    
+    string heatmap_img = "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap_new_matrix.png"; // where the heatmap will be saved
+    string background_img = "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/background_garden.png";
+
+    
+    /*Image Model LOOP*/
+    for (int i=0; i<(size_width-1); i++)  //Rows
+    {
+        for (int j=0; j<(size_height-1); j++) //Cols
+        {
+            if(new_matrix.at<uchar>(j,i)==0)
+            {
+                //nothing
+            }
+            else
+            {
+                heatmap_add_point(hm, i, j);
+            }
+        }
+    }
+    // This creates an image out of the heatmap.
+    // `image` now contains the image data in 32-bit RGBA.
+    vector<unsigned char> image(w*h * 4);
+    heatmap_render_default_to(hm, &image[0]);
+    // Now that we've got a finished heatmap picture, we don't need the map anymore.
+    heatmap_free(hm);
+    
+    // Finally, we use the lodepng library to save it as an image.
+    if (unsigned error = lodepng::encode(heatmap_img, image, w, h))
+    {
+        cerr << "encoder error " << error << ": " << lodepng_error_text(error) << endl;
+    }
+}
+
 
