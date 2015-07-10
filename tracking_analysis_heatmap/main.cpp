@@ -32,7 +32,7 @@ static const size_t w = 1280, h = 720;
 struct Pixel{
     int x;
     int y;
-    float intensity;
+    long intensity;
 };
 //End configuration
 
@@ -40,7 +40,7 @@ Mat new_matrix;
 void generate_heatmap(string filename, double begin, double end);
 void generate_heatmap_bis(Mat new_matrix);
 
-long comparison(Pixel pixel,Mat image);
+long sum_pixel(Pixel pixel,Mat image);
 
 Mat scrutation(Mat image);
 
@@ -184,44 +184,39 @@ Mat scrutation(Mat image)
     /*Variables*/
     Pixel pixel;
     /*Image Model LOOP*/
-    for (int i=0; i<(size_width-1); i++)  //Rows
+    for (int i=0; i<(size_height-1); i++)  //Rows
     {
-        for (int j=0; j<(size_height-1); j++) //Cols
+        for (int j=0; j<(size_width-1); j++) //Cols
         {
-            pixel.intensity=image.at<uchar>(j,i);
+            pixel.intensity=image.at<uchar>(i,j);
             pixel.x=i;
             pixel.y=j;
-            if(image.at<uchar>(j,i)==0)
+            if(pixel.intensity!=0)
             {
-                //nothing
+            image.at<uchar>(i,j)=sum_pixel(pixel, image); //set pixel to sum of pixels (11x11 window)
             }
-            else
-            {
-              image.at<uchar>(j,i)=comparison(pixel, image);
-            }//values aroundit
         }
+            
     }
-    return image;
+    return image; //then with this matrix i create the heatmap
 }
 
-long comparison(Pixel pixel,Mat image)
-
+long sum_pixel(Pixel pixel,Mat image)
 {
     /*Variables*/
     int row=0, col=0;
-    long distance=0;
-    
+    long value=0;
     
     /*Area LOOP*/
-    for ( int i=(pixel.x-area); row<(area_width); i++ )  //Rows
+    for ( int i=(pixel.x-area); row<(area_height); i++ )  //Rows
     {
-        for ( int j=(pixel.y-area); col<(area_height); j++ ) //Cols
+        for ( int j=(pixel.y-area); col<(area_width); j++ ) //Cols
         {
             if ((i<0) || (j<0) || (i>719) || (j>1279))
             {
                 //nothing out of the image
             }
-            else {distance+=image.at<uchar>(j,i);}
+            else {value+=image.at<uchar>(i,j);}   //add value of curent pixel
             
             col++;
         }
@@ -229,7 +224,7 @@ long comparison(Pixel pixel,Mat image)
         col=0;
     }
     
-    return (distance-pixel.intensity);
+    return value;
 }
 
 
@@ -241,21 +236,21 @@ void generate_heatmap_bis(Mat new_matrix)
     
     string heatmap_img = "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap_new_matrix.png"; // where the heatmap will be saved
     string background_img = "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/background_garden.png";
-
+    
+    int time=0, inc=0;
     
     /*Image Model LOOP*/
-    for (int i=0; i<(size_width-1); i++)  //Rows
+    for (int i=0; i<(size_height-1); i++)  //Rows
     {
-        for (int j=0; j<(size_height-1); j++) //Cols
+        for (int j=0; j<(size_width-1); j++) //Cols
         {
-            if(new_matrix.at<uchar>(j,i)==0)
-            {
-                //nothing
-            }
-            else
-            {
-                heatmap_add_point(hm, i, j);
-            }
+                time=new_matrix.at<uchar>(i,j);
+                inc=0;
+                while(inc!=time)
+                {
+                    heatmap_add_point(hm, j, i);
+                    inc++;
+                }
         }
     }
     // This creates an image out of the heatmap.
