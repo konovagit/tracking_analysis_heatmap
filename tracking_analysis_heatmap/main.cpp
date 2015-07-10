@@ -60,9 +60,9 @@ long scrutation(Mat image1, Mat image2)
     long distance=0;
     
     /*Image Model LOOP*/
-    for (int i=0; i<(size_width-1); i++)  //Rows
+    for (int i=0; i<(size_height-1); i++)  //Rows
     {
-        for (int j=0; j<(size_height-1); j++) //Cols
+        for (int j=0; j<(size_width-1); j++) //Cols
         {
             pixel.intensity=image1.at<uchar>(i,j);
             pixel.x=i;
@@ -87,9 +87,9 @@ long comparison(Pixel pixel,Mat image2) //pixel => struc image model   //image2 
     
     
     /*Area LOOP*/
-    for ( int i=(pixel.x-area); row<(area_width); i++ )  //Rows
+    for ( int i=(pixel.x-area); row<(area_height); i++ )  //Rows
     {
-       for ( int j=(pixel.y-area); col<(area_height); j++ ) //Cols
+       for ( int j=(pixel.y-area); col<(area_width); j++ ) //Cols
        {
            if ((pixel.x-area<0) || (pixel.y-area<0))
            {
