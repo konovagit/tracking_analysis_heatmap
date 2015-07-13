@@ -36,7 +36,9 @@ struct Pixel{
 };
 //End configuration
 
-Mat new_matrix;
+//Mat new_matrix;
+Mat new_matrix( h, w, CV_8UC1, Scalar(0) );
+
 void generate_heatmap(string filename, double begin, double end);
 void generate_heatmap_bis(Mat new_matrix);
 
@@ -183,22 +185,21 @@ Mat scrutation(Mat image)
 {
     /*Variables*/
     Pixel pixel;
+    Mat buff_image( h, w, CV_8UC1, Scalar(0) );
+
+
     /*Image Model LOOP*/
-    for (int i=0; i<(size_height-1); i++)  //Rows
+    for (int i=0; i<(image.rows); i++)  //Rows
     {
-        for (int j=0; j<(size_width-1); j++) //Cols
+        for (int j=0; j<(image.cols); j++) //Cols
         {
             pixel.intensity=image.at<uchar>(i,j);
             pixel.x=i;
             pixel.y=j;
-            if(pixel.intensity!=0)
-            {
-            image.at<uchar>(i,j)=sum_pixel(pixel, image); //set pixel to sum of pixels (11x11 window)
-            }
+            buff_image.at<uchar>(i,j)=sum_pixel(pixel, image); //set pixel to sum of pixels (11x11 window)
         }
-            
     }
-    return image; //then with this matrix i create the heatmap
+    return buff_image; //return the new_matrix to create the heatmap
 }
 
 long sum_pixel(Pixel pixel,Mat image)
@@ -212,7 +213,7 @@ long sum_pixel(Pixel pixel,Mat image)
     {
         for ( int j=(pixel.y-area); col<(area_width); j++ ) //Cols
         {
-            if ((i<0) || (j<0) || (i>719) || (j>1279))
+            if ((i<0) || (j<0) || (i>(size_height-1)) || (j>(size_width-1)))
             {
                 //nothing out of the image
             }
@@ -227,15 +228,12 @@ long sum_pixel(Pixel pixel,Mat image)
     return value;
 }
 
-
-
 void generate_heatmap_bis(Mat new_matrix)
 {
     // Create the heatmap object with the given dimensions (in pixel).
     heatmap_t* hm = heatmap_new(w, h);
     
     string heatmap_img = "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap_new_matrix.png"; // where the heatmap will be saved
-    string background_img = "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/background_garden.png";
     
     int time=0, inc=0;
     
@@ -244,19 +242,20 @@ void generate_heatmap_bis(Mat new_matrix)
     {
         for (int j=0; j<(size_width-1); j++) //Cols
         {
-                time=new_matrix.at<uchar>(i,j);
+                time=new_matrix.at<uchar>(i,j);   //save number of time activated
                 inc=0;
-                while(inc!=time)
-                {
-                    heatmap_add_point(hm, j, i);
+               while(inc!=time)
+               {
+                    heatmap_add_point(hm, j, i);     //draw
                     inc++;
-                }
+               }
         }
     }
     // This creates an image out of the heatmap.
     // `image` now contains the image data in 32-bit RGBA.
     vector<unsigned char> image(w*h * 4);
-    heatmap_render_default_to(hm, &image[0]);
+    heatmap_render_default_to(hm, &image[0]);  //color mode
+    //heatmap_render_to(hm, heatmap_cs_b2w, &image[0]); //grayscale mode
     // Now that we've got a finished heatmap picture, we don't need the map anymore.
     heatmap_free(hm);
     
