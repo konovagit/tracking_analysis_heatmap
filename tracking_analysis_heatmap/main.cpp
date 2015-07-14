@@ -26,6 +26,14 @@ using namespace cv;
 #define area_height 11
 #define area 5
 
+#define width 100
+#define height 100
+
+#define ar_width 5
+#define ar_height 5
+#define ar 2
+
+
 // Size of heat map. Must be the same that the video.
 static const size_t w = 1280, h = 720;
 
@@ -46,6 +54,10 @@ long sum_pixel(Pixel pixel,Mat image);
 
 Mat scrutation_bis(Mat image);
 
+long scrutation(Mat image1, Mat image2);
+long comparison(Pixel pixel, Mat image2);
+
+
 
 
 int main()
@@ -60,7 +72,21 @@ int main()
     Mat src2 = imread("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/background_garden.png");
     addWeighted( src1, 0.5, src2, 0.5, 0.0, dst);
     imwrite( "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/garden_heatmap_original_result.png", dst );
-
+    
+    string image="/Users/konova/tracking_analysis_heatmap/Res/heatmap_gray.png";
+    string image2="/Users/konova/tracking_analysis_heatmap/Res/heatmap_gray3.png";
+    
+    //Resize image
+    Size size(100,100);//the dst image size,e.g.100x100
+    Mat img=imread(image, CV_LOAD_IMAGE_GRAYSCALE);
+    Mat img2=imread(image2, CV_LOAD_IMAGE_GRAYSCALE);
+    
+    resize(img,img,size);//resize image
+    resize(img2,img2,size);//resize image
+    
+    long distance=0;
+    distance=scrutation(img,img2);
+    cout<<"Distance:"<<distance<<endl;
 
     return 0;
 }
@@ -266,4 +292,67 @@ void generate_heatmap_bis(Mat new_matrix)
     }
 }
 
+long scrutation(Mat image1, Mat image2)
+{
+    /*Variables*/
+    Pixel pixel;
+    long distance=0;
+    
+    /*Image Model LOOP*/
+    for (int i=0; i<(height-1); i++)  //Rows
+    {
+        for (int j=0; j<(width-1); j++) //Cols
+        {
+            pixel.intensity=image1.at<uchar>(i,j);
+            pixel.x=i;
+            pixel.y=j;
+            if(pixel.intensity==image2.at<uchar>(i,j))
+            {
+                //nothing
+            }
+            else distance+=comparison(pixel, image2);
+        }
+    }
+    return distance;
+}
+
+long comparison(Pixel pixel,Mat image2) //pixel => struc image model   //image2 =>image for comparison
+
+{
+    /*Variables*/
+    int row=0, col=0;
+    long distance=0;
+    Pixel pixel2=pixel; //set pixel2 at the value of model
+    
+    
+    /*Area LOOP*/
+    for ( int i=(pixel.x-ar); row<(ar_height); i++ )  //Rows
+    {
+        for ( int j=(pixel.y-ar); col<(ar_width); j++ ) //Cols
+        {
+            if ((pixel.x-ar<0) || (pixel.y-ar<0))
+            {
+                //nothing out of the image
+            }
+            else if(image2.at<uchar>(i,j)== pixel.intensity)
+            {
+                return distance=0;   //one pixel match
+            }
+            else if (pixel2.intensity==pixel.intensity)  //first loop
+            {
+                pixel2.intensity=image2.at<uchar>(i,j);
+                distance=(abs(pixel2.intensity-pixel.intensity));
+            }
+            else if((abs(image2.at<uchar>(i,j)-pixel.intensity)<distance))  //update distance if --
+            {
+                distance=abs(image2.at<uchar>(i,j)-pixel.intensity);
+            }
+            col++;
+        }
+        row++;
+        col=0;
+    }
+    
+    return distance;
+}
 
