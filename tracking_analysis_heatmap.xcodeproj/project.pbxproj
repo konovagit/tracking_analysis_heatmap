@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A9A5BF091B5567E400487EF0 /* comparison.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9A5BF071B5567E400487EF0 /* comparison.cpp */; };
 		A9CFA3F31B2789C8005A254F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9CFA3F21B2789C8005A254F /* main.cpp */; };
 		A9CFA3FF1B283161005A254F /* lodepng.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9CFA3FA1B283161005A254F /* lodepng.cpp */; };
 		A9CFA4001B283161005A254F /* heatmap.c in Sources */ = {isa = PBXBuildFile; fileRef = A9CFA3FC1B283161005A254F /* heatmap.c */; };
@@ -26,6 +27,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A9A5BF071B5567E400487EF0 /* comparison.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = comparison.cpp; sourceTree = "<group>"; };
+		A9A5BF081B5567E400487EF0 /* comparison.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = comparison.h; sourceTree = "<group>"; };
 		A9CFA3EF1B2789C8005A254F /* tracking_analysis_heatmap */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tracking_analysis_heatmap; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9CFA3F21B2789C8005A254F /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		A9CFA3F91B283161005A254F /* heatmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = heatmap.h; sourceTree = "<group>"; };
@@ -73,6 +76,8 @@
 			isa = PBXGroup;
 			children = (
 				A9CFA3F21B2789C8005A254F /* main.cpp */,
+				A9A5BF071B5567E400487EF0 /* comparison.cpp */,
+				A9A5BF081B5567E400487EF0 /* comparison.h */,
 			);
 			path = tracking_analysis_heatmap;
 			sourceTree = "<group>";
@@ -133,6 +138,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9A5BF091B5567E400487EF0 /* comparison.cpp in Sources */,
 				A9CFA3F31B2789C8005A254F /* main.cpp in Sources */,
 				A9CFA4001B283161005A254F /* heatmap.c in Sources */,
 				A9CFA4011B283161005A254F /* gray.c in Sources */,

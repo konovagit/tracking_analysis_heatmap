@@ -62,4 +62,5 @@ dependencies: \
   /usr/local/include/opencv2/contrib/contrib.hpp \
   /usr/local/include/opencv2/contrib/retina.hpp \
   /usr/local/include/opencv2/contrib/openfabmap.hpp \
-  /usr/local/include/opencv/highgui.h
+  /usr/local/include/opencv/highgui.h \
+  /Users/konova/tracking_analysis_heatmap/tracking_analysis_heatmap/comparison.h
