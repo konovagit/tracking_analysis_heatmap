@@ -44,14 +44,14 @@ void generate_heatmap_bis(Mat new_matrix);
 
 long sum_pixel(Pixel pixel,Mat image);
 
-Mat scrutation(Mat image);
+Mat scrutation_bis(Mat image);
 
 
 
 int main()
 {
 
-    generate_heatmap("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/FeetLocations_bis.txt", 0, 2062);
+    generate_heatmap("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/FeetLocations_bis.txt", 0, 200);
     generate_heatmap_bis(new_matrix);
     
     //Superposition//
@@ -74,7 +74,7 @@ void generate_heatmap(string filename, double begin, double end)
     
     // Path of the heatmap and the video's background
     string nom_video = "134823_Feng";
-    string heatmap_img = "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap_garden.png"; // where the heatmap will be saved
+    string heatmap_img = "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/heatmap_orignal.png"; // where the heatmap will be saved
     string background_img = "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/background_garden.png";
     
     // Create the heatmap object with the given dimensions (in pixel).
@@ -153,7 +153,7 @@ void generate_heatmap(string filename, double begin, double end)
                         
                         if (ftime_msec >= begin && ftime_msec <= end)
                         {
-                           //heatmap_add_point(hm, x, y);
+                           heatmap_add_point(hm, x, y);
                            matrix.at<uchar>(y,x)+=1;  //add 1 each time pixel is activated
                          }
                     }
@@ -161,7 +161,7 @@ void generate_heatmap(string filename, double begin, double end)
                 }
                 imwrite( "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/TEST.png", matrix );
                 
-                new_matrix=scrutation(matrix);
+                new_matrix=scrutation_bis(matrix);
                 imwrite( "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/new_matrix.png", matrix );
                 // This creates an image out of the heatmap.
                 // `image` now contains the image data in 32-bit RGBA.
@@ -181,7 +181,7 @@ void generate_heatmap(string filename, double begin, double end)
     }
 }
 
-Mat scrutation(Mat image)
+Mat scrutation_bis(Mat image)
 {
     /*Variables*/
     Pixel pixel;
