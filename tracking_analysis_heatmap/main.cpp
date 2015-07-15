@@ -6,6 +6,7 @@
 #include "heatmap.h"
 #include "gray.h"
 
+
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/core/core.hpp>
@@ -13,6 +14,8 @@
 #include <opencv/cvaux.h>
 #include <opencv/highgui.h>
 #include "comparison.h"
+
+
 
 
 using namespace std;
@@ -38,7 +41,7 @@ Mat new_matrix( h, w, CV_8UC1, Scalar(0) );
 
 void generate_heatmap(string filename, double begin, double end);
 void generate_heatmap_bis(Mat new_matrix, string name);
-void generate_heatmap_1MN(string filename, double begin, double end);
+void generate_heatmap_1MN(string filename, double begin, double end, string pathsave);
 
 long sum_pixel(Pixel pixel,Mat image);
 
@@ -48,8 +51,7 @@ Mat scrutation_bis(Mat image);
 
 int main()
 {
-
-    //generate_heatmap("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/FeetLocations_bis.txt", 0, 2062);
+    generate_heatmap("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/FeetLocations_bis.txt", 0, 2062);
    // generate_heatmap_bis(new_matrix);
     
     //Superposition//
@@ -95,8 +97,11 @@ void generate_heatmap(string filename, double begin, double end)
 
     // Create a matrix (rows, cols, type, initial value)
     Mat matrix( h, w, CV_8UC1, Scalar(0) );
+    Mat mat_2MN( h, w, CV_8UC1, Scalar(0) );
+    Mat mat_5MN( h, w, CV_8UC1, Scalar(0) );
+    Mat mat_10MN( h, w, CV_8UC1, Scalar(0) );
     
-    int time=0;
+    int time=0, time2=0, time5=0, time10=0;
     
     //Mat result;
     string line, pos_x, pos_y, time_msec, fps, nb_frames;
@@ -104,7 +109,7 @@ void generate_heatmap(string filename, double begin, double end)
     size_t pos_tmp, pos_tmp2, pos_tmp3;
     unsigned int x = 0, y = 0;
     int i = 0;
-    double test=0;
+    double compt=0, compt2=0, compt5=0, compt10=0;
     
     // Get the first time and last time of the txt positions file (x,y,t).
     ifstream input(filename); // Path of the txt file
@@ -170,17 +175,44 @@ void generate_heatmap(string filename, double begin, double end)
                         {
                            //heatmap_add_point(hm, x, y);
                            matrix.at<uchar>(y,x)+=1;  //add 1 each time pixel is activated
-                            
-                           if(ftime_msec>103)
+                           mat_2MN.at<uchar>(y,x)+=1;
+                           mat_5MN.at<uchar>(y,x)+=1;
+                           mat_10MN.at<uchar>(y,x)+=1;
+                           
+                           if((ftime_msec>103)&&(ftime_msec-time>17)) //1mn heatmap
                            {
-                                if((ftime_msec-time>17)||(time=0)) //each 10 secondes
-                                {
                                     time=ftime_msec;
                                     new_matrix=scrutation_bis(matrix);
-                                    generate_heatmap_1MN("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/FeetLocations_bis.txt", test+17, time+17);
-                                    new_matrix.release();
-                                }
+                                    compt+=17;
+                                    generate_heatmap_1MN("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/FeetLocations_bis.txt", compt, time+17, "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/Heatmap_1MN/heatmap_1MN_");
+                                    new_matrix.setTo(0);
                            }
+                           if((ftime_msec>206)&&(ftime_msec-time2>17))  //2mn heatmap
+                           {
+                                    time2=ftime_msec;
+                                    compt2+=17;
+                                    new_matrix=scrutation_bis(mat_2MN);
+                                    generate_heatmap_1MN("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/FeetLocations_bis.txt", compt2, time2+17,"/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/Heatmap_2MN/heatmap_2MN_");
+                                    new_matrix.setTo(0);
+                           }
+                           if((ftime_msec>507)&&(ftime_msec-time5>17))  //5mn heatmap
+                           {
+                                    time5=ftime_msec;
+                                    compt5+=17;
+                                    new_matrix=scrutation_bis(mat_5MN);
+                                    generate_heatmap_1MN("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/FeetLocations_bis.txt", compt5, time5+17,"/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/Heatmap_5MN/heatmap_5MN_");
+                                    new_matrix.setTo(0);
+                            }
+                            if((ftime_msec>1015)&&(ftime_msec-time10>17))  //10mn heatmap
+                            {
+                                    time10=ftime_msec;
+                                    compt10+=17;
+                                    new_matrix=scrutation_bis(mat_10MN);
+                                    generate_heatmap_1MN("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/FeetLocations_bis.txt", compt10, time10+17,"/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/Heatmap_10MN/heatmap_10MN_");
+                                    new_matrix.setTo(0);
+                            }
+
+
                         }
                     }
                     i++;
@@ -293,12 +325,11 @@ void generate_heatmap_bis(Mat new_matrix, string name)
 }
 
 
-void generate_heatmap_1MN(string filename, double begin, double end)
+void generate_heatmap_1MN(string filename, double begin, double end, string pathsave)
 {
     // Create the heatmap object with the given dimensions (in pixel).
     heatmap_t* hm = heatmap_new(w, h);
 
-    char number;
     // Create a matrix (rows, cols, type, initial value)
     Mat matrix( h, w, CV_8UC1, Scalar(0) );
     
@@ -394,9 +425,8 @@ void generate_heatmap_1MN(string filename, double begin, double end)
                 //heatmap_render_to(hm, heatmap_cs_b2w, &image[0]); //grayscale mode
                 // Now that we've got a finished heatmap picture, we don't need the map anymore.
                 heatmap_free(hm);
-                number++;
                 // Finally, we use the lodepng library to save it as an image.
-                if (unsigned error = lodepng::encode("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/Heatmap_1MN/heatmap_1MN_"+to_string(number)+".png", image, w, h))
+                if (unsigned error = lodepng::encode(pathsave+to_string((int)begin)+"_"+to_string((int)end)+".png", image, w, h))
                 {
                     cerr << "encoder error " << error << ": " << lodepng_error_text(error) << endl;
                 }

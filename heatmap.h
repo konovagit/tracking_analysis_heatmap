@@ -160,6 +160,7 @@ heatmap_colorscheme_t* heatmap_colorscheme_load(const unsigned char* colors, siz
 void heatmap_colorscheme_free(heatmap_colorscheme_t* cs);
 
 extern const heatmap_colorscheme_t* heatmap_cs_default;
+    
 
 #ifdef __cplusplus
 } /* extern "C" */
