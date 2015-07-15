@@ -15,9 +15,6 @@
 #include <opencv/highgui.h>
 #include "comparison.h"
 
-
-
-
 using namespace std;
 using namespace cv;
 
@@ -51,7 +48,7 @@ Mat scrutation_bis(Mat image);
 
 int main()
 {
-    generate_heatmap("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/FeetLocations_bis.txt", 0, 2062);
+    //generate_heatmap("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/FeetLocations_bis.txt", 0, 2062);
    // generate_heatmap_bis(new_matrix);
     
     //Superposition//
@@ -61,21 +58,46 @@ int main()
     addWeighted( src1, 0.5, src2, 0.5, 0.0, dst);
     imwrite( "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/garden_heatmap_original_result.png", dst );
     
-    string image="/Users/konova/tracking_analysis_heatmap/Res/heatmap_gray.png";
-    string image2="/Users/konova/tracking_analysis_heatmap/Res/heatmap_gray3.png";
-    
-    //Resize image
-    //Size size(100,100);//the dst image size,e.g.100x100
-    Mat img=imread(image, CV_LOAD_IMAGE_GRAYSCALE);
-    Mat img2=imread(image2, CV_LOAD_IMAGE_GRAYSCALE);
-    
-    //resize(img,img,size);//resize image
-    //resize(img2,img2,size);//resize image
-    
     long distance=0;
+    int begin=17, end=525, compteur=0;
+    
+    ofstream fichier("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/Heatmap_5MN/laundry_match.txt", ios::out | ios::trunc);
+    if(fichier)
+    {
+        fichier<<"Distance"<<';'<<"T"<<';'<<"Interval"<<';'<<"Laundry Test"<<';'<<"[600"<<'-'<<"1145]"<<endl;
+    }
+    else cerr << "Impossible d'ouvrir le fichier !" << endl;
+
+    do {
+        string image="/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/Laundry/heatmap_laundry.png";
+        string image2="/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/Heatmap_5MN/heatmap_5MN_"+to_string(begin)+"_"+to_string(end)+".png";
+        begin+=17;
+        end+=18;
+        
+        Mat img=imread(image, CV_LOAD_IMAGE_COLOR);
+        Mat img2=imread(image2, CV_LOAD_IMAGE_COLOR);
+        
+
+        distance=scrutation(img,img2);
+        compteur++;
+        cout<<"Distance:"<<distance<<"  Inter:"<<'['<<begin<<'-'<<end<<']'<<endl;
+        if(fichier)
+        {
+            fichier<<distance<<';'<<compteur<<';'<<'['<<begin<<'-'<<end<<']'<<endl;
+        }
+        else cerr << "Impossible d'ouvrir le fichier !" << endl;
+    } while (end!=2059);
+    /*long distance=0;
+    string image="/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/Laundry/heatmap_laundry.png";
+    string image2="/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/Heatmap_1MN/heatmap_1MN_51_157.png";
+    Mat img=imread(image, CV_LOAD_IMAGE_COLOR);
+    Mat img2=imread(image2, CV_LOAD_IMAGE_COLOR);
+    
     distance=scrutation(img,img2);
     cout<<"Distance:"<<distance<<endl;
-
+    */
+        fichier.close();
+    
     return 0;
 }
 
@@ -184,7 +206,7 @@ void generate_heatmap(string filename, double begin, double end)
                                     time=ftime_msec;
                                     new_matrix=scrutation_bis(matrix);
                                     compt+=17;
-                                    generate_heatmap_1MN("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/FeetLocations_bis.txt", compt, time+17, "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/Heatmap_1MN/heatmap_1MN_");
+                                    generate_heatmap_1MN("/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/FeetLocations_bis.txt", compt, time+17, "/Users/konova/tracking_analysis_heatmap/Res/Video_134823_Feng/Heatmap_1MN/heatmap_1MN_2");
                                     new_matrix.setTo(0);
                            }
                            if((ftime_msec>206)&&(ftime_msec-time2>17))  //2mn heatmap

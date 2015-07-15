@@ -19,7 +19,8 @@ using namespace cv;
 #define width 1280
 #define height 720
 
-struct Pixel{
+struct Pixel
+{
     int x;
     int y;
     long intensity;

@@ -7,9 +7,9 @@ long scrutation(Mat image1, Mat image2)
     long distance=0;
     
     /*Image Model LOOP*/
-    for (int i=0; i<(height-1); i++)  //Rows
+    for (int i=0; i<(image1.rows-1); i++)  //Rows
     {
-        for (int j=0; j<(width-1); j++) //Cols
+        for (int j=0; j<(image1.cols-1); j++) //Cols
         {
             pixel.intensity=image1.at<uchar>(i,j);
             pixel.x=i;
